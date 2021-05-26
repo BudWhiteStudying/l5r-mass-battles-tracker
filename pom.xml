@@ -20,6 +20,7 @@
     <modules>
         <module>mass-battle-tracker-server</module>
         <module>mass-battle-tracker-client</module>
+        <module>mass-battle-tracker-ear</module>
     </modules>
 
 
