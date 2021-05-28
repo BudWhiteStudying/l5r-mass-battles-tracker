@@ -5,13 +5,20 @@ import { InvolvedArmiesComponent } from './involved-armies/involved-armies.compo
 import { FinalSummaryComponent } from './final-summary/final-summary.component';
 import { AppRoutingModule } from '../app-routing.module';
 
+import {MatCardModule} from '@angular/material/card';
+import {MatButtonModule} from '@angular/material/button';
+import {MatInputModule} from '@angular/material/input';
+
 
 
 @NgModule({
   declarations: [NameDescriptionComponent, InvolvedArmiesComponent, FinalSummaryComponent],
   imports: [
     CommonModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MatCardModule,
+    MatButtonModule,
+    MatInputModule
   ]
 })
 export class NewBattleModule { }
