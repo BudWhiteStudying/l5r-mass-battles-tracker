@@ -1,5 +1,70 @@
-<p>involved-armies works!</p>
-
-<nav>
-    <a routerLink="/new-battle/final-summary">Next</a>
-</nav>
+<mat-card style="margin:10vh 2vw 0vw 2vw;">
+    <form *ngIf="battle" style="width: 100%;">
+        <mat-form-field style="width: 100%;">
+          <mat-label>Name of the battle</mat-label>
+          <input matInput value="{{battle.name}}" disabled>
+        </mat-form-field>
+      
+        <mat-form-field style="width: 100%;">
+          <mat-label>Description of the battle</mat-label>
+          <textarea matInput value="{{battle.description}}" disabled></textarea>
+        </mat-form-field>
+        <mat-label>Involved armies:</mat-label>
+        <button style="margin-left: 1vw; width: 3vw; height: 3vw; vertical-align: middle; line-height: normal; padding: 0 !important;" mat-mini-fab color="primary" aria-label="Example icon button with a plus one icon">
+          <mat-icon style="padding: 0 !important;">add</mat-icon>
+        </button>
+        <mat-label style="display: block;" *ngIf="!battle.involvedArmies.length">No armies</mat-label>
+        <mat-card style = "margin-top: 2vw;">
+            <form>
+                <mat-label style="font-weight: bold;">Add army</mat-label>
+                <br/>
+                <mat-form-field style="margin-top:1vw;">
+                    <mat-label>Army name</mat-label>
+                    <input matInput placeholder="e.g. Army of the Crashing Wave">
+                </mat-form-field>
+                <br/>
+                <mat-form-field style="margin-top:1vw;">
+                    <mat-label>Army clan</mat-label>
+                    <input matInput placeholder="e.g. Dragon Clan">
+                </mat-form-field>
+                <br/>
+                <mat-label>Cohorts:</mat-label>
+                <button style="margin-left: 1vw; width: 3vw; height: 3vw; vertical-align: middle; line-height: normal; padding: 0 !important;" mat-mini-fab color="primary" aria-label="Example icon button with a plus one icon">
+                    <mat-icon style="padding: 0 !important;">add</mat-icon>
+                </button>
+                <mat-card style = "margin-top: 1vw;">
+                    <form>
+                        <mat-label style="font-weight: bold;">Add Cohort</mat-label>
+                        <br/>
+                        <mat-form-field style="margin-top:1vw;">
+                            <mat-label>Leader of the cohort</mat-label>
+                            <input matInput placeholder="e.g. Mirumoto Anzu">
+                        </mat-form-field>
+                        <br/>
+                        <mat-form-field style="margin-top:1vw;">
+                            <mat-label>Cohort name</mat-label>
+                            <input matInput placeholder="e.g. light cavalry">
+                        </mat-form-field>
+                        <br/>
+                        <button mat-raised-button color="primary" style="display: block; margin-top: 2vw; margin-bottom: 2vw;">Add cohort</button>
+                    </form>
+                </mat-card>
+                <button mat-raised-button color="primary" style="display: block; margin-top: 2vw; margin-bottom: 2vw;">Add army</button>
+            </form>
+        </mat-card>
+        <mat-label style="display: block;" *ngFor="let army of battle.involvedArmies">
+            <mat-card style = "margin-top: 2vw;">
+                <div>
+                    <b>{{army.name}}</b> ({{army.cohorts.length}} cohorts)
+                </div>
+                <div>
+                    <b>Strength: </b> {{army.strength}}
+                </div>
+                <div>
+                    <b>Discipline: </b> {{army.discipline}}
+                </div>
+            </mat-card>
+        </mat-label>
+      </form>
+    <button mat-raised-button color="primary" (click)="onSubmit()" style="display: block; width: 100%; margin-top: 2vw; margin-bottom: 2vw;">Next</button>
+</mat-card>
