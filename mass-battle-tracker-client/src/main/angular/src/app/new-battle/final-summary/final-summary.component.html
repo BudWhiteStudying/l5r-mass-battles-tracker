@@ -1,5 +1,5 @@
-<mat-card style="margin:10vh 2vw 0vw 2vw;">
-    <form *ngIf="battle" style="width: 100%;">
+<mat-card class="main-card">
+    <form *ngIf="battle" class="full-width">
         <!-- VALUE SET IN THE PREVIOUS VIEW, DISABLED -->
         <div>
             <b>Name of the battle: </b> {{battle.name}}
@@ -13,11 +13,11 @@
             <b>Involved armies: </b>
         </div>
         <!-- LIST OF ARMIES -->
-        <mat-label style="display: block;" *ngFor="let army of battle.involvedArmies">
-            <mat-card style = "margin-top: 2vw;">
+        <mat-label class="block" *ngFor="let army of battle.involvedArmies">
+            <mat-card class = "loosely-spaced">
                 <div>
                     <b>{{army.name}}</b> ({{army.cohorts.length}} cohorts)
-                    <mat-list-item style="display: block; margin-left: 2vw;" *ngFor="let cohort of army.cohorts"><b>{{cohort.name}}</b>, led by {{cohort.leader.name}}</mat-list-item>
+                    <mat-list-item class="indented-block" *ngFor="let cohort of army.cohorts"><b>{{cohort.name}}</b>, led by {{cohort.leader.name}}</mat-list-item>
                 </div>
                 <div>
                     <b>Strength: </b> {{army.strength}}
@@ -28,5 +28,5 @@
             </mat-card>
         </mat-label>
       </form>
-    <button mat-raised-button color="primary" (click)="onFinalSubmit()" style="display: block; width: 100%; margin-top: 2vw; margin-bottom: 2vw;">Done</button>
+    <button mat-raised-button color="primary" (click)="onFinalSubmit()" class="wide-button">Done</button>
 </mat-card>

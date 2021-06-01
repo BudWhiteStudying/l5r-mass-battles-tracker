@@ -1,83 +1,83 @@
-<mat-card style="margin:10vh 2vw 0vw 2vw;">
-    <form *ngIf="battle" style="width: 100%;">
+<mat-card class="main-card">
+    <form *ngIf="battle" class="full-width">
         <!-- VALUE SET IN THE PREVIOUS VIEW, DISABLED -->
-        <mat-form-field style="width: 100%;">
+        <mat-form-field class="full-width">
           <mat-label>Name of the battle</mat-label>
           <input matInput value="{{battle.name}}" disabled>
         </mat-form-field>
         <!-- VALUE SET IN THE PREVIOUS VIEW, DISABLED -->
-        <mat-form-field style="width: 100%;">
+        <mat-form-field class="full-width">
           <mat-label>Description of the battle</mat-label>
           <textarea matInput value="{{battle.description}}" disabled></textarea>
         </mat-form-field>
         <!-- INVOLVED ARMIES -->
         <mat-label>Involved armies:</mat-label>
-        <button type="button" (click)="onAddArmyClicked()" style="margin-left: 1vw; width: 3vw; height: 3vw; vertical-align: middle; line-height: normal; padding: 0 !important;" mat-mini-fab color="primary" aria-label="Example icon button with a plus one icon">
-          <mat-icon style="padding: 0 !important;">add</mat-icon>
+        <button type="button" (click)="onAddArmyClicked()" class="smaller-fab-button" mat-mini-fab color="primary" aria-label="Example icon button with a plus one icon">
+          <mat-icon class="smaller-fab-button-icon">add</mat-icon>
         </button>
         <!-- "NO ARMIES" LABEL -->
-        <mat-label *ngIf="!battle.involvedArmies.length && !addingNewArmy" style="display: block;">No armies</mat-label>
+        <mat-label *ngIf="!battle.involvedArmies.length && !addingNewArmy" class="block">No armies</mat-label>
         <!-- ADD NEW ARMY -->
-        <mat-card *ngIf="addingNewArmy" style = "margin-top: 2vw;">
+        <mat-card *ngIf="addingNewArmy" class = "loosely-spaced">
             <form [formGroup]="newArmyForm">
-                <mat-label style="font-weight: bold;">New army</mat-label>
+                <mat-label class="bold">New army</mat-label>
                 <br/>
-                <mat-form-field style="margin-top:1vw;">
+                <mat-form-field class="loosely-spaced">
                     <mat-label>Army name</mat-label>
                     <input formControlName="armyName" matInput placeholder="e.g. Army of the Crashing Wave">
                 </mat-form-field>
                 <br/>
-                <mat-form-field style="margin-top:1vw;">
+                <mat-form-field class="loosely-spaced">
                     <mat-label>Army clan</mat-label>
                     <input formControlName="armyClan" matInput placeholder="e.g. Dragon Clan">
                 </mat-form-field>
                 <br/>
-                <mat-form-field style="margin-top:1vw;">
+                <mat-form-field class="loosely-spaced">
                     <mat-label>Army Strength</mat-label>
                     <input formControlName="armyStrength" matInput placeholder="e.g. 100">
                 </mat-form-field>
                 <br/>
-                <mat-form-field style="margin-top:1vw;">
+                <mat-form-field class="loosely-spaced">
                     <mat-label>Army Discipline</mat-label>
                     <input formControlName="armyDiscipline" matInput placeholder="e.g. 100">
                 </mat-form-field>
                 <br/>
                 <mat-label>Cohorts:</mat-label>
-                <button type="button" (click)="onAddCohortClicked()" style="margin-left: 1vw; width: 3vw; height: 3vw; vertical-align: middle; line-height: normal; padding: 0 !important;" mat-mini-fab color="primary">
-                    <mat-icon style="padding: 0 !important;">add</mat-icon>
+                <button type="button" (click)="onAddCohortClicked()" class="smaller-fab-button" mat-mini-fab color="primary">
+                    <mat-icon class="smaller-fab-button-icon">add</mat-icon>
                 </button>
                 <!-- ADD NEW COHORT -->
-                <mat-card *ngIf="addingNewCohort" style = "margin-top: 1vw;">
+                <mat-card *ngIf="addingNewCohort" class = "loosely-spaced">
                     <form [formGroup]="newCohortForm">
-                        <mat-label style="font-weight: bold;">New Cohort</mat-label>
+                        <mat-label class="bold">New Cohort</mat-label>
                         <br/>
-                        <mat-form-field style="margin-top:1vw;">
+                        <mat-form-field class="loosely-spaced">
                             <mat-label>Leader of the cohort</mat-label>
                             <input formControlName="leaderName" matInput placeholder="e.g. Mirumoto Anzu">
                         </mat-form-field>
                         <br/>
-                        <mat-form-field style="margin-top:1vw;">
+                        <mat-form-field class="loosely-spaced">
                             <mat-label>Cohort name</mat-label>
                             <input formControlName="cohortName" matInput placeholder="e.g. light cavalry">
                         </mat-form-field>
                         <br/>
-                        <button type="button" (click)="onNewCohortSubmit()" mat-raised-button color="primary" style="display: block; width: 100%; margin-top: 2vw; margin-bottom: 2vw;">Add cohort</button>
+                        <button type="button" (click)="onNewCohortSubmit()" mat-raised-button color="primary" class="wide-button">Add cohort</button>
                     </form>
                 </mat-card>
                 <!-- LIST OF COHORTS -->
-                <mat-label style="display: block;" *ngFor="let cohort of armyInProgress.cohorts">
-                    <mat-card style = "margin-top: 2vw;">
+                <mat-label class="block" *ngFor="let cohort of armyInProgress.cohorts">
+                    <mat-card class = "loosely-spaced">
                         <div>
                             <b>{{cohort.name}}</b>, led by {{cohort.leader.name}}
                         </div>
                     </mat-card>
                 </mat-label>
-                <button type="button" (click)="onNewArmySubmit()" mat-raised-button color="primary" style="display: block; width: 100%; margin-top: 2vw; margin-bottom: 2vw;">Add army</button>
+                <button type="button" (click)="onNewArmySubmit()" mat-raised-button color="primary" class="wide-button">Add army</button>
             </form>
         </mat-card>
         <!-- LIST OF ARMIES -->
-        <mat-label style="display: block;" *ngFor="let army of battle.involvedArmies">
-            <mat-card style = "margin-top: 2vw;">
+        <mat-label class="block" *ngFor="let army of battle.involvedArmies">
+            <mat-card class = "loosely-spaced">
                 <div>
                     <b>{{army.name}}</b> ({{army.cohorts.length}} cohorts)
                 </div>
@@ -90,5 +90,5 @@
             </mat-card>
         </mat-label>
       </form>
-    <button mat-raised-button color="primary" (click)="onFinalSubmit()" style="display: block; width: 100%; margin-top: 2vw; margin-bottom: 2vw;">Next</button>
+    <button mat-raised-button color="primary" (click)="onFinalSubmit()" class="wide-button">Next</button>
 </mat-card>

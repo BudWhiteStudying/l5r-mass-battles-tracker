@@ -30,3 +30,25 @@ $mass-battle-tracker-client-theme: mat-light-theme($mass-battle-tracker-client-p
 
 html, body { height: 100%; background-color: #f0f4f5;}
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.main-card {
+    margin:10vh 2vw 0vw 2vw;
+}
+.wide-button {
+    display: block !important;
+    margin-top: 2vw !important;
+    margin-bottom: 2vw !important;
+    width: 100%;
+}
+.full-width {
+    width: 100%;
+}
+.loosely-spaced {
+    margin-top:1vw;
+}
+.bold {
+    font-weight: bold;
+}
+.block {
+    display: block;
+}
