@@ -12,14 +12,14 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <application.context.path>l5r-mass-battle-tracker</application.context.path>
+        <application.context.path>mass-battle-tracker</application.context.path>
         <spring.doc.version>1.4.8</spring.doc.version>
         <spring.boot.adopted.version>2.4.1</spring.boot.adopted.version>
     </properties>
 
     <modules>
-        <module>mass-battle-tracker-server</module>
         <module>mass-battle-tracker-client</module>
+        <module>mass-battle-tracker-server</module>
         <module>mass-battle-tracker-ear</module>
     </modules>
 

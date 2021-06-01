@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 2.30.840 on 2021-06-01 20:39:05.
+// Generated using typescript-generator version 2.30.840 on 2021-06-02 00:07:21.
 
 export interface Army extends Serializable {
     name: string;
