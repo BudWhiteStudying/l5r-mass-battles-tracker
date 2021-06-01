@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
 })
 export class NameDescriptionComponent implements OnInit {
 
-  private battle: Battle = {name : "", description : "", involvedArmies : []};
+  private battle: Battle = {id : 0, name : "", description : "", involvedArmies : []};
   private battleFormValueChangesSubscription: Subscription;
 
   newBattleForm: FormGroup;

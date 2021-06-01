@@ -13,6 +13,8 @@ import java.util.List;
 @AllArgsConstructor
 public class Battle implements Serializable {
     @NotNull
+    Long id;
+    @NotNull
     private String name;
     private String description;
     private List<Army> involvedArmies;

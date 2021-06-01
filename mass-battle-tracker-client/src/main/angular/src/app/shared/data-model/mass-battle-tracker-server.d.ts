@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 2.30.840 on 2021-06-02 00:07:21.
+// Generated using typescript-generator version 2.30.840 on 2021-06-02 00:18:36.
 
 export interface Army extends Serializable {
     name: string;
@@ -15,6 +15,7 @@ export interface Army extends Serializable {
 }
 
 export interface Battle extends Serializable {
+    id: number;
     name: string;
     description: string;
     involvedArmies: Army[];
