@@ -1,12 +1,13 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 2.30.840 on 2021-06-01 02:54:14.
+// Generated using typescript-generator version 2.30.840 on 2021-06-01 20:39:05.
 
 export interface Army extends Serializable {
     name: string;
     description: string;
     mainClan: string;
     cohorts: Cohort[];
+    leaders: Character[];
     strength: number;
     currentCasualties: number;
     discipline: number;

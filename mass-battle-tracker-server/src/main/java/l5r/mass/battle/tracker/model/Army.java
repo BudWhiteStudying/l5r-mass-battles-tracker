@@ -17,6 +17,7 @@ public class Army implements Serializable {
     private String description;
     private String mainClan;
     private List<Cohort> cohorts;
+    private List<Character> leaders;
 
     private int strength;
     private int currentCasualties;

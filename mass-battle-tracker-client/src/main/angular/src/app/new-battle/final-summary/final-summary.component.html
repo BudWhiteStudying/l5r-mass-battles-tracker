@@ -16,8 +16,8 @@
         <mat-label class="block" *ngFor="let army of battle.involvedArmies">
             <mat-card class = "loosely-spaced">
                 <div>
-                    <b>{{army.name}}</b> ({{army.cohorts.length}} cohorts)
-                    <mat-list-item class="indented-block" *ngFor="let cohort of army.cohorts"><b>{{cohort.name}}</b>, led by {{cohort.leader.name}}</mat-list-item>
+                    <b>{{army.name}}</b> ({{army.leaders.length}} leaders)
+                    <mat-list-item class="indented-block" *ngFor="let leader of army.leaders"><b>{{leader.name}}</b>, of the {{leader.clan}} clan</mat-list-item>
                 </div>
                 <div>
                     <b>Strength: </b> {{army.strength}}

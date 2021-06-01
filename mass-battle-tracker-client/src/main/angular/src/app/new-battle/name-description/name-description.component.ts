@@ -32,15 +32,20 @@ export class NameDescriptionComponent implements OnInit {
 
   onSubmit(): void {
     console.log("You clicked NEXT with name = " + this.newBattleForm.value.name + " and description = " + this.newBattleForm.value.description);
-    this.router.navigateByUrl('/new-battle/involved-armies', {
-      state: {battle: {name : this.newBattleForm.value.name, description : this.newBattleForm.value.description, involvedArmies : []}}
-    });
+    if(this.newBattleForm.valid) {
+      this.router.navigateByUrl('/new-battle/involved-armies', {
+        state: {battle: {name : this.newBattleForm.value.name, description : this.newBattleForm.value.description, involvedArmies : []}}
+      });
+    }
+    else {
+      console.warn("yeah no");
+    }
   }
 
   private buildBattleForm(): void {
     this.newBattleForm = this.formBuilder.group({
-      name: new FormControl(''),//[this.battle.name, Validators.required],
-      description: new FormControl('')//[this.battle.description, Validators.required]
+      name: new FormControl('',Validators.required),
+      description: new FormControl('',Validators.required)
     });
 
     let formInitialValue = this.newBattleForm.value;
