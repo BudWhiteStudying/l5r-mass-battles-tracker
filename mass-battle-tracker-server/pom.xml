@@ -169,6 +169,7 @@
                     <classPatterns>
                         <pattern>l5r.mass.battle.tracker.model.**</pattern>
                     </classPatterns>
+                    <requiredAnnotations>javax.validation.constraints.NotNull</requiredAnnotations>
                 </configuration>
             </plugin>
             <plugin>
