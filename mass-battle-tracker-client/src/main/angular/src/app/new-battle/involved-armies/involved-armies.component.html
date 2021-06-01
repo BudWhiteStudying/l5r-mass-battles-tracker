@@ -1,5 +1,96 @@
-<p>involved-armies works!</p>
-
-<nav>
-    <a routerLink="/new-battle/final-summary">Next</a>
-</nav>
+<mat-card class="main-card">
+    <form (ngSubmit)="onFinalSubmit()" *ngIf="battle" class="full-width">
+        <!-- VALUE SET IN THE PREVIOUS VIEW, DISABLED -->
+        <mat-form-field class="full-width">
+          <mat-label>Name of the battle</mat-label>
+          <input matInput value="{{battle.name}}" disabled>
+        </mat-form-field>
+        <!-- VALUE SET IN THE PREVIOUS VIEW, DISABLED -->
+        <mat-form-field class="full-width">
+          <mat-label>Description of the battle</mat-label>
+          <textarea matInput value="{{battle.description}}" disabled></textarea>
+        </mat-form-field>
+        <!-- INVOLVED ARMIES -->
+        <mat-label>Involved armies:</mat-label>
+        <button type="button" (click)="onAddArmyClicked()" class="smaller-fab-button" mat-mini-fab color="primary" aria-label="Example icon button with a plus one icon">
+          <mat-icon class="smaller-fab-button-icon">add</mat-icon>
+        </button>
+        <!-- "NO ARMIES" LABEL -->
+        <mat-label *ngIf="!battle.involvedArmies.length && !addingNewArmy" class="block">No armies</mat-label>
+        <mat-error *ngIf="notEnoughArmiesError">Provide two armies!</mat-error>
+        <!-- ADD NEW ARMY -->
+        <mat-card *ngIf="addingNewArmy" class = "loosely-spaced">
+            <form (ngSubmit)="onNewArmySubmit()" [formGroup]="newArmyForm">
+                <mat-label class="bold">New army</mat-label>
+                <br/>
+                <mat-form-field class="loosely-spaced">
+                    <mat-label>Army name</mat-label>
+                    <input formControlName="armyName" matInput placeholder="e.g. Army of the Crashing Wave">
+                </mat-form-field>
+                <br/>
+                <mat-form-field class="loosely-spaced">
+                    <mat-label>Army clan</mat-label>
+                    <input formControlName="armyClan" matInput placeholder="e.g. Dragon Clan">
+                </mat-form-field>
+                <br/>
+                <mat-form-field class="loosely-spaced">
+                    <mat-label>Army Strength</mat-label>
+                    <input type="number" formControlName="armyStrength" matInput placeholder="e.g. 100">
+                </mat-form-field>
+                <br/>
+                <mat-form-field class="loosely-spaced">
+                    <mat-label>Army Discipline</mat-label>
+                    <input type="number" formControlName="armyDiscipline" matInput placeholder="e.g. 100">
+                </mat-form-field>
+                <br/>
+                <mat-label>Leaders:</mat-label>
+                <button type="button" (click)="onAddLeaderClicked()" class="smaller-fab-button" mat-mini-fab color="primary">
+                    <mat-icon class="smaller-fab-button-icon">add</mat-icon>
+                </button>
+                <mat-error *ngIf="notEnoughLeadersError">Provide at least one leader!</mat-error>
+                <!-- ADD NEW COHORT -->
+                <mat-card *ngIf="addingNewLeader" class = "loosely-spaced">
+                    <form (ngSubmit)="onNewLeaderSubmit()" [formGroup]="newLeaderForm">
+                        <mat-label class="bold">New Leader</mat-label>
+                        <br/>
+                        <mat-form-field class="loosely-spaced">
+                            <mat-label>Name of the leader</mat-label>
+                            <input formControlName="leaderName" matInput placeholder="e.g. Mirumoto Anzu">
+                        </mat-form-field>
+                        <br/>
+                        <mat-form-field class="loosely-spaced">
+                            <mat-label>Clan of the leader</mat-label>
+                            <input formControlName="leaderClan" matInput placeholder="e.g. Dragon">
+                        </mat-form-field>
+                        <br/>
+                        <button mat-raised-button color="primary" class="wide-button">Add leader</button>
+                    </form>
+                </mat-card>
+                <!-- LIST OF COHORTS -->
+                <mat-label class="block" *ngFor="let leader of armyInProgress.leaders">
+                    <mat-card class = "loosely-spaced">
+                        <div>
+                            <b>{{leader.name}}</b>, of the {{leader.clan}} clan
+                        </div>
+                    </mat-card>
+                </mat-label>
+                <button mat-raised-button color="primary" class="wide-button">Add army</button>
+            </form>
+        </mat-card>
+        <!-- LIST OF ARMIES -->
+        <mat-label class="block" *ngFor="let army of battle.involvedArmies">
+            <mat-card class = "loosely-spaced">
+                <div>
+                    <b>{{army.name}}</b> ({{army.leaders.length}} leaders)
+                </div>
+                <div>
+                    <b>Strength: </b> {{army.strength}}
+                </div>
+                <div>
+                    <b>Discipline: </b> {{army.discipline}}
+                </div>
+            </mat-card>
+        </mat-label>
+        <button mat-raised-button color="primary" class="wide-button">Next</button>
+      </form>
+</mat-card>

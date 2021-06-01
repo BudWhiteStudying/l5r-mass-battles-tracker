@@ -1,5 +1,32 @@
-<p>final-summary works!</p>
-
-<nav>
-    <a routerLink="/">Done</a>
-</nav>
+<mat-card class="main-card">
+    <form *ngIf="battle" class="full-width">
+        <!-- VALUE SET IN THE PREVIOUS VIEW, DISABLED -->
+        <div>
+            <b>Name of the battle: </b> {{battle.name}}
+        </div>
+        <!-- VALUE SET IN THE PREVIOUS VIEW, DISABLED -->
+        <div>
+            <b>Description of the battle: </b> {{battle.description}}
+        </div>
+        <!-- INVOLVED ARMIES -->
+        <div>
+            <b>Involved armies: </b>
+        </div>
+        <!-- LIST OF ARMIES -->
+        <mat-label class="block" *ngFor="let army of battle.involvedArmies">
+            <mat-card class = "loosely-spaced">
+                <div>
+                    <b>{{army.name}}</b> ({{army.leaders.length}} leaders)
+                    <mat-list-item class="indented-block" *ngFor="let leader of army.leaders"><b>{{leader.name}}</b>, of the {{leader.clan}} clan</mat-list-item>
+                </div>
+                <div>
+                    <b>Strength: </b> {{army.strength}}
+                </div>
+                <div>
+                    <b>Discipline: </b> {{army.discipline}}
+                </div>
+            </mat-card>
+        </mat-label>
+      </form>
+    <button mat-raised-button color="primary" (click)="onFinalSubmit()" class="wide-button">Done</button>
+</mat-card>

@@ -11,17 +11,9 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Army implements Serializable {
+public class Battle implements Serializable {
     @NotNull
     private String name;
     private String description;
-    private String mainClan;
-    private List<Cohort> cohorts;
-    private List<Character> leaders;
-
-    private int strength;
-    private int currentCasualties;
-
-    private int discipline;
-    private int currentPanic;
+    private List<Army> involvedArmies;
 }
