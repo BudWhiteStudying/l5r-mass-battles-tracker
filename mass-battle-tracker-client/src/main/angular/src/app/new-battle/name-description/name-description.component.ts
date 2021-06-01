@@ -34,7 +34,7 @@ export class NameDescriptionComponent implements OnInit {
     console.log("You clicked NEXT with name = " + this.newBattleForm.value.name + " and description = " + this.newBattleForm.value.description);
     this.router.navigateByUrl('/new-battle/involved-armies', {
       state: {battle: {name : this.newBattleForm.value.name, description : this.newBattleForm.value.description, involvedArmies : []}}
-  });
+    });
   }
 
   private buildBattleForm(): void {

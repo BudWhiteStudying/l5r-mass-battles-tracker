@@ -15,6 +15,7 @@ public class Army implements Serializable {
     @NotNull
     private String name;
     private String description;
+    private String mainClan;
     private List<Cohort> cohorts;
 
     private int strength;
