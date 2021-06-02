@@ -12,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Battle implements Serializable {
+    Long id;
     @NotNull
     private String name;
     private String description;

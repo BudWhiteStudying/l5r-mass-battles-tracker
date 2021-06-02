@@ -12,8 +12,8 @@
         </mat-form-field>
         <!-- INVOLVED ARMIES -->
         <mat-label>Involved armies:</mat-label>
-        <button type="button" (click)="onAddArmyClicked()" class="smaller-fab-button" mat-mini-fab color="primary" aria-label="Example icon button with a plus one icon">
-          <mat-icon class="smaller-fab-button-icon">add</mat-icon>
+        <button type="button" (click)="onAddArmyClicked()" mat-icon-button color="primary" aria-label="Add Army">
+            <mat-icon>add_circle</mat-icon>
         </button>
         <!-- "NO ARMIES" LABEL -->
         <mat-label *ngIf="!battle.involvedArmies.length && !addingNewArmy" class="block">No armies</mat-label>
@@ -44,8 +44,8 @@
                 </mat-form-field>
                 <br/>
                 <mat-label>Leaders:</mat-label>
-                <button type="button" (click)="onAddLeaderClicked()" class="smaller-fab-button" mat-mini-fab color="primary">
-                    <mat-icon class="smaller-fab-button-icon">add</mat-icon>
+                <button type="button" (click)="onAddLeaderClicked()" mat-icon-button color="primary" aria-label="Add Leader">
+                    <mat-icon>add_circle</mat-icon>
                 </button>
                 <mat-error *ngIf="notEnoughLeadersError">Provide at least one leader!</mat-error>
                 <!-- ADD NEW COHORT -->
@@ -63,7 +63,8 @@
                             <input formControlName="leaderClan" matInput placeholder="e.g. Dragon">
                         </mat-form-field>
                         <br/>
-                        <button mat-raised-button color="primary" class="wide-button">Add leader</button>
+                        <button mat-raised-button color="primary" class="small-button" [disabled]="newLeaderForm.invalid">Add leader</button>
+                        <button mat-stroked-button type="button" color="primary" class="small-button">Discard</button>
                     </form>
                 </mat-card>
                 <!-- LIST OF COHORTS -->
@@ -74,7 +75,9 @@
                         </div>
                     </mat-card>
                 </mat-label>
-                <button mat-raised-button color="primary" class="wide-button">Add army</button>
+                <br/>
+                <button mat-raised-button color="primary" class="small-button" [disabled]="newArmyForm.invalid || armyInProgress.leaders.length<1">Add army</button>
+                <button mat-stroked-button type="button" color="primary" class="small-button">Discard</button>
             </form>
         </mat-card>
         <!-- LIST OF ARMIES -->
