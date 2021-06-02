@@ -8,7 +8,7 @@ import { Battle } from "../../shared/data-model/mass-battle-tracker-server";
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-name-description',
+  selector: 'name-description',
   templateUrl: './name-description.component.html',
   styleUrls: ['./name-description.component.scss']
 })

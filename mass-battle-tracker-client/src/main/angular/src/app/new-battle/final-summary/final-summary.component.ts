@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Battle } from 'src/app/shared/data-model/mass-battle-tracker-server';
 
 @Component({
-  selector: 'app-final-summary',
+  selector: 'final-summary',
   templateUrl: './final-summary.component.html',
   styleUrls: ['./final-summary.component.scss']
 })

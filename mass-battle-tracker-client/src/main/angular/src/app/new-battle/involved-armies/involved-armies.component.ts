@@ -7,7 +7,7 @@ import {isEqualWith} from "lodash";
 import {isNullOrEmptyString} from "../../shared/utility/string.utility";
 
 @Component({
-  selector: 'app-involved-armies',
+  selector: 'involved-armies',
   templateUrl: './involved-armies.component.html',
   styleUrls: ['./involved-armies.component.scss']
 })
