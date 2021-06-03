@@ -12,6 +12,8 @@ import {isNullOrEmptyString} from "../../shared/utility/string.utility";
   styleUrls: ['./involved-armies.component.scss']
 })
 export class InvolvedArmiesComponent implements OnInit {
+  
+  pageTitle = "Set involved armies";
 
   battle : Battle;
   addingNewArmy : Boolean = false;

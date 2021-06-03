@@ -13,6 +13,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./name-description.component.scss']
 })
 export class NameDescriptionComponent implements OnInit {
+  
+  pageTitle = "Set name and description of the Battle";
 
   private battle: Battle = {name : "", description : "", involvedArmies : []};
   private battleFormValueChangesSubscription: Subscription;

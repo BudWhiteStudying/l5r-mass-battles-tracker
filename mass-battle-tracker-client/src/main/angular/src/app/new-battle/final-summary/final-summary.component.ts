@@ -9,6 +9,8 @@ import { Battle } from 'src/app/shared/data-model/mass-battle-tracker-server';
   styleUrls: ['./final-summary.component.scss']
 })
 export class FinalSummaryComponent implements OnInit {
+  
+  pageTitle = "Final summary";
 
   battle : Battle;
 

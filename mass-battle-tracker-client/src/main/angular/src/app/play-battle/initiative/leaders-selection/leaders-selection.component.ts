@@ -10,6 +10,8 @@ import { Army, Battle, Cohort } from 'src/app/shared/data-model/mass-battle-trac
 })
 export class LeadersSelectionComponent implements OnInit {
 
+  pageTitle = "Initiative phase: for each Army, select the Leaders that will lead the Cohorts"
+
   battle : Battle;
   cohortInProgress : Cohort = {name : "", leader : {name : "", clan : ""}};
   addingNewCohort : Boolean;
