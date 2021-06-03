@@ -30,7 +30,10 @@ export class FinalSummaryComponent implements OnInit {
     .post<Battle>("/mass-battle-tracker/api/battle",this.battle).toPromise()
     .then(
       response => {
-        console.info("Here it is: " + JSON.stringify(response))
+        console.info("Here it is: " + JSON.stringify(response));
+        this.router.navigateByUrl("/play-battle/initiative/commander-selection", {
+          state: {battle: this.battle}
+        });
       }
     );
     this.router.navigateByUrl("/");

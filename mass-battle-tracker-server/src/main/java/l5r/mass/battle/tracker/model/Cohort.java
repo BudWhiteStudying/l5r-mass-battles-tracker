@@ -13,7 +13,6 @@ import java.io.Serializable;
 public class Cohort implements Serializable {
     @NotNull
     private String name;
-    private String description;
     @NotNull
     private Character leader;
 }

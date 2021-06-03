@@ -11,12 +11,15 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import {MatSelectModule} from '@angular/material/select';
+
 import { PlayBattleModule } from '../play-battle.module';
+import { NonConscriptedLeadersPipe } from './leaders-selection/non-conscripted-leaders';
 
 
 
 @NgModule({
-  declarations: [CommanderSelectionComponent, InitiativeRecordingComponent, LeadersSelectionComponent],
+  declarations: [CommanderSelectionComponent, InitiativeRecordingComponent, LeadersSelectionComponent, NonConscriptedLeadersPipe],
   imports: [
     CommonModule,
     AppRoutingModule,
@@ -28,7 +31,8 @@ import { PlayBattleModule } from '../play-battle.module';
     MatInputModule,
     MatIconModule,
     MatFormFieldModule,
-    PlayBattleModule
+    PlayBattleModule,
+    MatSelectModule
   ]
 })
 export class InitiativeModule { }

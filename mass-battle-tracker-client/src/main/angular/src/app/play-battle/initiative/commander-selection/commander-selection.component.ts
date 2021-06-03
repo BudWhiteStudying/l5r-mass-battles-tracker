@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { WebDriverLogger } from 'blocking-proxy/built/lib/webdriver_logger';
 import { Battle } from 'src/app/shared/data-model/mass-battle-tracker-server';
 
 @Component({
@@ -20,22 +21,14 @@ export class CommanderSelectionComponent implements OnInit {
         "description": "The Scorpion tries to snatch Kenson Gakka back from Lion hands",
         "involvedArmies": [
             {
-                "cohorts": [
+                "leaders": [
                     {
-                        "description": "Elite Guard",
-                        "leader": {
-                            "clan": "",
-                            "name": "Bayushi Ogoi"
-                        },
-                        "name": "Elite Guard"
+                      "clan": "",
+                      "name": "Bayushi Ogoi"
                     },
                     {
-                        "description": "Heavy Infantry I",
-                        "leader": {
-                            "clan": "",
-                            "name": "Shosuro Ageko"
-                        },
-                        "name": "Heavy Infantry I"
+                      "clan": "",
+                      "name": "Shosuro Ageko"
                     }
                 ],
                 "currentCasualties": 0,
@@ -47,22 +40,14 @@ export class CommanderSelectionComponent implements OnInit {
                 "strength": 70
             },
             {
-                "cohorts": [
+                "leaders": [
                     {
-                        "description": "Heavy cavalry",
-                        "leader": {
-                            "clan": "",
-                            "name": "Matsu Mitsui"
-                        },
-                        "name": "Heavy cavalry"
+                      "clan": "Lion",
+                      "name": "Matsu Mitsui"
                     },
                     {
-                        "description": "Crab infantry",
-                        "leader": {
-                            "clan": "",
-                            "name": "Hida Gamagori"
-                        },
-                        "name": "Crab infantry"
+                      "clan": "Crab",
+                      "name": "Hida Gamagori"
                     }
                 ],
                 "currentCasualties": 0,
@@ -83,4 +68,15 @@ export class CommanderSelectionComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  onSubmit() : void {
+    console.debug("Commanders have been selected, army is:\n" + JSON.stringify(this.battle, null, 4));
+    if(this.battle.involvedArmies.filter(army => !army.commander).length>0) {
+      console.warn("Not all commanders have been set");
+    }
+    else {
+      this.router.navigateByUrl('/play-battle/initiative/initiative-recording', {
+        state: {battle: this.battle}
+      });
+    }
+  }
 }
