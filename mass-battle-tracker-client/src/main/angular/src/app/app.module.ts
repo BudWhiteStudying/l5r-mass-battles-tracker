@@ -10,6 +10,8 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import { LandingModule } from './landing/landing.module';
 import { NewBattleModule } from './new-battle/new-battle.module';
 import { ResumeBattleModule } from './resume-battle/resume-battle.module';
+import { PlayBattleModule } from './play-battle/play-battle.module';
+import { InitiativeModule } from './play-battle/initiative/initiative.module';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,9 @@ import { ResumeBattleModule } from './resume-battle/resume-battle.module';
     MatToolbarModule,
     LandingModule,
     NewBattleModule,
-    ResumeBattleModule
+    ResumeBattleModule,
+    PlayBattleModule,
+    InitiativeModule
   ],
   providers: [],
   bootstrap: [AppComponent]

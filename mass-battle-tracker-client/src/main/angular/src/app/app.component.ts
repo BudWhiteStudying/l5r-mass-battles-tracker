@@ -6,5 +6,14 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'mass-battle-tracker-client';
+  pageTitle : String;
+
+  setPageTitle(title : String): void {
+    console.debug("Event intercepted");
+    this.pageTitle = title;
+  }
+
+  componentAdded(event): void {
+    this.setPageTitle(event.pageTitle ? event.pageTitle : '');
+  }
 }

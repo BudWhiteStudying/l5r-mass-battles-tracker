@@ -4,11 +4,13 @@ import { Router } from '@angular/router';
 import { Battle } from 'src/app/shared/data-model/mass-battle-tracker-server';
 
 @Component({
-  selector: 'app-final-summary',
+  selector: 'final-summary',
   templateUrl: './final-summary.component.html',
   styleUrls: ['./final-summary.component.scss']
 })
 export class FinalSummaryComponent implements OnInit {
+  
+  pageTitle = "Final summary";
 
   battle : Battle;
 
@@ -30,7 +32,10 @@ export class FinalSummaryComponent implements OnInit {
     .post<Battle>("/mass-battle-tracker/api/battle",this.battle).toPromise()
     .then(
       response => {
-        console.info("Here it is: " + JSON.stringify(response))
+        console.info("Here it is: " + JSON.stringify(response));
+        this.router.navigateByUrl("/play-battle/initiative/commander-selection", {
+          state: {battle: this.battle}
+        });
       }
     );
     this.router.navigateByUrl("/");

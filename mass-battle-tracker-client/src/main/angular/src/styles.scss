@@ -49,9 +49,15 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .loosely-spaced {
     margin-top:1vw;
 }
+.extra-loosely-spaced {
+    margin-top:2vw;
+}
 .bold {
     font-weight: bold;
 }
 .block {
     display: block;
+}
+.page-title {
+    font-size: 16px;
 }

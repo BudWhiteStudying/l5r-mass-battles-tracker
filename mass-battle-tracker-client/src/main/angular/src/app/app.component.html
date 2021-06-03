@@ -1,4 +1,7 @@
 <mat-toolbar color="primary">
     <span>L5R Mass Battle Tracker</span>
 </mat-toolbar>
-<router-outlet></router-outlet>
+<mat-toolbar color="secondary" *ngIf="pageTitle">
+    <span class="page-title">{{pageTitle}}</span>
+</mat-toolbar>
+<router-outlet (activate)="componentAdded($event)"></router-outlet>

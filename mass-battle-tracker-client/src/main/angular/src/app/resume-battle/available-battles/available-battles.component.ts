@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-available-battles',
+  selector: 'available-battles',
   templateUrl: './available-battles.component.html',
   styleUrls: ['./available-battles.component.scss']
 })

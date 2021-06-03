@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'app-landing',
+  selector: 'landing',
   templateUrl: './landing.component.html',
   styleUrls: ['./landing.component.scss']
 })
