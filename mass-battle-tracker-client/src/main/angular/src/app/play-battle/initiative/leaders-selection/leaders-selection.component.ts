@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { WebDriverLogger } from 'blocking-proxy/built/lib/webdriver_logger';
 import { Army, Battle, Cohort } from 'src/app/shared/data-model/mass-battle-tracker-server';
 
 @Component({
@@ -10,7 +9,7 @@ import { Army, Battle, Cohort } from 'src/app/shared/data-model/mass-battle-trac
 })
 export class LeadersSelectionComponent implements OnInit {
 
-  pageTitle = "Initiative phase: for each Army, select the Leaders that will lead the Cohorts"
+  pageTitle = "Initiative phase: for each Army, form one or more Cohorts, and nominate the Leaders that will lead them"
 
   battle : Battle;
   cohortInProgress : Cohort = {name : "", leader : {name : "", clan : ""}};
