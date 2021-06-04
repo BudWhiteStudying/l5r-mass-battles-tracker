@@ -22,7 +22,7 @@ export class ObjectiveSelectionComponent implements OnInit {
       }
       else {
         this.roundState = {
-          roundIndex : 1,
+          roundIndex : 0,
           currentObjectivePerArmyName : {},
           actionHistory : []
         };

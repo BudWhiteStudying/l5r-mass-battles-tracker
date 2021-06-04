@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 2.30.840 on 2021-06-04 12:43:29.
+// Generated using typescript-generator version 2.30.840 on 2021-06-05 01:36:58.
 
 export interface Action extends Serializable {
     description?: string;
@@ -19,6 +19,7 @@ export interface Army extends Serializable {
     commander?: Commander;
     strength?: number;
     currentCasualties?: number;
+    attritionReduction?: number;
     discipline?: number;
     currentPanic?: number;
 }

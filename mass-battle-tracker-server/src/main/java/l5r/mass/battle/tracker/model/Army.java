@@ -23,6 +23,7 @@ public class Army implements Serializable {
 
     private int strength;
     private int currentCasualties;
+    private int attritionReduction;
 
     private int discipline;
     private int currentPanic;
