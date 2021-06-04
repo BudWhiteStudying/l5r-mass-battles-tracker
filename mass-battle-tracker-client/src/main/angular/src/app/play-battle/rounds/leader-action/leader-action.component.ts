@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Action, ActionType, Battle, ExecutedAction, RoundState } from 'src/app/shared/data-model/mass-battle-tracker-server';
+import { Action, ActionType, Battle, Character, Commander, ExecutedAction, RoundState } from 'src/app/shared/data-model/mass-battle-tracker-server';
 
 @Component({
   selector: 'leader-action',
@@ -40,12 +40,17 @@ currentAction : ExecutedAction;
 
   onSubmit(): void {
     this.recordAction(this.currentAction, this.roundState);
-    //this.roundState.actionHistory.push(this.currentAction);
-    this.switchToNextCommander(this.roundState, this.battle);
     console.debug("Upon submission, roundState is\n" + JSON.stringify(this.roundState, null, 4));
-    this.router.navigateByUrl('/play-battle/rounds/leader-selection', {
-      state: {battle: this.battle, roundState : this.roundState}
-    });
+    if(this.switchToNextCommander(this.roundState, this.battle)) {
+      this.router.navigateByUrl('/play-battle/rounds/leader-selection', {
+        state: {battle: this.battle, roundState : this.roundState}
+      });
+    }
+    else {
+      this.router.navigateByUrl('/play-battle/rounds/conditions-check', {
+        state: {battle: this.battle, roundState : this.roundState}
+      });
+    }
   }
 
   recordAction(action : ExecutedAction, roundState : RoundState) : void {
@@ -54,8 +59,27 @@ currentAction : ExecutedAction;
     roundState.actionHistory.push(action);
   }
 
-  switchToNextCommander(roundState : RoundState, battle : Battle): void {
-    roundState.actingCommander = battle.involvedArmies.map(army => army.commander).find(commander => commander!=roundState.actingCommander);
+  switchToNextCommander(roundState : RoundState, battle : Battle): Boolean {
+    let roundCanGoOn = true;
+    let currentCommander = roundState.actingCommander;
+    let nextCommander = battle.involvedArmies.map(army => army.commander).find(commander => commander!=roundState.actingCommander);
+    let availableLeadersForCurrentCommander = this.findAvailableLeaders(roundState, battle, currentCommander).length;
+    let availableLeadersForNextCommander = this.findAvailableLeaders(roundState, battle, nextCommander).length;
+    if(availableLeadersForNextCommander>0) {
+      roundState.actingCommander = nextCommander;
+    }
+    else if(availableLeadersForCurrentCommander>0) {
+      roundState.actingCommander = currentCommander;
+    }
+    else {
+      roundCanGoOn = false;
+    }
+    return roundCanGoOn;
+  }
+
+  private findAvailableLeaders (roundState : RoundState, battle : Battle, commander : Commander) : Character[]{
+    return battle.involvedArmies.find(army => army.commander==commander).leaders
+    .filter(leader => !roundState.actionHistory.filter(action => action.executionRound===roundState.roundIndex).map(action => action.perpetrator).includes(leader));
   }
 
   ngOnInit(): void {
