@@ -9,7 +9,7 @@ import { Battle } from 'src/app/shared/data-model/mass-battle-tracker-server';
 })
 export class InitiativeRecordingComponent implements OnInit {
   
-  pageTitle = "Initiative phase: record initiative of each commander";
+  pageTitle = '"Initiative" phase: record initiative of each commander';
 
   battle : Battle;
 

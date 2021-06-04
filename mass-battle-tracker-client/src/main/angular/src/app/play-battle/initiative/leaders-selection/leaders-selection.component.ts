@@ -9,7 +9,7 @@ import { Army, Battle, Cohort } from 'src/app/shared/data-model/mass-battle-trac
 })
 export class LeadersSelectionComponent implements OnInit {
 
-  pageTitle = "Initiative phase: for each Army, form one or more Cohorts, and nominate the Leaders that will lead them"
+  pageTitle = '"Initiative" phase: for each Army, form one or more Cohorts, and nominate the Leaders that will lead them'
 
   battle : Battle;
   cohortInProgress : Cohort = {name : "", leader : {name : "", clan : ""}};
@@ -58,6 +58,11 @@ export class LeadersSelectionComponent implements OnInit {
         console.warn("Cohorts were not defined in at least one case");
         this.notEnoughCohortsError = true;
       }
+    }
+    if(!this.notEnoughCohortsError) {
+      this.router.navigateByUrl('/play-battle/rounds/objective-selection', {
+        state: {battle: this.battle}
+      });
     }
   }
 }

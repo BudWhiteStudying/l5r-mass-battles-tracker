@@ -10,7 +10,7 @@ import { Battle } from 'src/app/shared/data-model/mass-battle-tracker-server';
 })
 export class CommanderSelectionComponent implements OnInit {
   
-  pageTitle = "Initiative phase: select a commander for every involved Army";
+  pageTitle = '"Initiative" phase: select a commander for every involved Army';
 
   battle : Battle;
 

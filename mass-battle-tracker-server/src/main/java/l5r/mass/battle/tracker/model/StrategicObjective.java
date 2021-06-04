@@ -9,10 +9,8 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Action implements Serializable {
+public class StrategicObjective implements Serializable {
+    private String name;
     private String description;
-    private ActionType type;
-    private boolean canCauseAttrition;
-    private boolean canCausePanic;
-    private boolean canRecoverDiscipline;
+    private StrategicObjectiveType type;
 }

@@ -9,7 +9,6 @@ export class AppComponent {
   pageTitle : String;
 
   setPageTitle(title : String): void {
-    console.debug("Event intercepted");
     this.pageTitle = title;
   }
 

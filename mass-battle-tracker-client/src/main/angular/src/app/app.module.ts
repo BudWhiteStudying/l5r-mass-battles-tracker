@@ -12,6 +12,7 @@ import { NewBattleModule } from './new-battle/new-battle.module';
 import { ResumeBattleModule } from './resume-battle/resume-battle.module';
 import { PlayBattleModule } from './play-battle/play-battle.module';
 import { InitiativeModule } from './play-battle/initiative/initiative.module';
+import { RoundsModule } from './play-battle/rounds/rounds.module';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { InitiativeModule } from './play-battle/initiative/initiative.module';
     NewBattleModule,
     ResumeBattleModule,
     PlayBattleModule,
-    InitiativeModule
+    InitiativeModule,
+    RoundsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

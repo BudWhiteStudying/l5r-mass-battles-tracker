@@ -3,16 +3,15 @@ import { Router } from '@angular/router';
 import { Battle, RoundState } from 'src/app/shared/data-model/mass-battle-tracker-server';
 
 @Component({
-  selector: 'leader-selection',
-  templateUrl: './leader-selection.component.html',
-  styleUrls: ['./leader-selection.component.scss']
+  selector: 'first-move',
+  templateUrl: './first-move.component.html',
+  styleUrls: ['./first-move.component.scss']
 })
-export class LeaderSelectionComponent implements OnInit {
+export class FirstMoveComponent implements OnInit {
 
   battle : Battle;
   roundState : RoundState;
-  
-  pageTitle = `"Rounds" phase: acting Commander picks a Leader`;
+  pageTitle = `"Rounds" phase: determine who makes the first move`;
 
   constructor(private router:Router) {
     if(this.router.getCurrentNavigation().extras.state) {
@@ -22,10 +21,12 @@ export class LeaderSelectionComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.pageTitle = `Rounds phase (round {this.roundState.roundIndex}): determine who makes the first move`;
   }
 
   onSubmit(): void {
-    this.router.navigateByUrl('/play-battle/rounds/leader-action', {
+    console.debug("Upon submission, roundState is\n" + JSON.stringify(this.roundState, null, 4));
+    this.router.navigateByUrl('/play-battle/rounds/leader-selection', {
       state: {battle: this.battle, roundState : this.roundState}
     });
   }

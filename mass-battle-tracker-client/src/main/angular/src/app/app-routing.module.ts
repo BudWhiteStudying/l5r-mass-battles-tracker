@@ -17,6 +17,7 @@ import { ObjectiveSelectionComponent } from './play-battle/rounds/objective-sele
 import { LeaderSelectionComponent } from './play-battle/rounds/leader-selection/leader-selection.component';
 import { LeaderActionComponent } from './play-battle/rounds/leader-action/leader-action.component';
 import { ConditionsCheckComponent } from './play-battle/rounds/conditions-check/conditions-check.component';
+import { FirstMoveComponent } from './play-battle/rounds/first-move/first-move.component';
 
 
 const routes: Routes = [
@@ -55,6 +56,10 @@ const routes: Routes = [
   {
     path: 'play-battle/rounds/objective-selection',
     component: ObjectiveSelectionComponent
+  },
+  {
+    path: 'play-battle/rounds/first-move',
+    component: FirstMoveComponent
   },
   {
     path: 'play-battle/rounds/leader-selection',
