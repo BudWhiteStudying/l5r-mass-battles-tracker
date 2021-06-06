@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 2.30.840 on 2021-06-05 01:36:58.
+// Generated using typescript-generator version 2.30.840 on 2021-06-06 16:09:13.
 
 export interface Action extends Serializable {
     description?: string;
@@ -58,14 +58,17 @@ export interface RoundState extends Serializable {
     roundIndex?: number;
     actingCommander?: Commander;
     actingLeader?: Character;
-    currentObjectivePerArmyName?: { [index: string]: string };
+    currentObjectivePerArmyName?: { [index: string]: StrategicObjective };
     actionHistory?: ExecutedAction[];
 }
 
 export interface StrategicObjective extends Serializable {
     name?: string;
     description?: string;
-    type?: StrategicObjectiveType;
+    reached?: boolean;
+    attritionCaused?: number;
+    panicCaused?: number;
+    disciplineRecovered?: number;
 }
 
 export interface Serializable {

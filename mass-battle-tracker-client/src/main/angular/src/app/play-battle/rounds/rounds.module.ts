@@ -13,6 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 import { PlayBattleModule } from '../play-battle.module';
 import { FirstMoveComponent } from './first-move/first-move.component';
@@ -36,7 +37,8 @@ import { StandingLeadersOfCommanderPipe } from './leader-selection/standing-lead
     MatIconModule,
     MatFormFieldModule,
     PlayBattleModule,
-    MatSelectModule
+    MatSelectModule,
+    MatCheckboxModule
   ]
 })
 export class RoundsModule { }

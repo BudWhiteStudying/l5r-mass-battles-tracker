@@ -132,9 +132,22 @@ export class ObjectiveSelectionComponent implements OnInit {
     });
   }
 
+  private initializeStrategicObjectives() : void {
+    this.battle.involvedArmies.forEach(
+      army => {
+        this.roundState.currentObjectivePerArmyName[army.name] = {
+          name : "",
+          description : "",
+          reached : false
+        };
+      }
+    );
+  }
+
   ngOnInit(): void {
     this.roundState.roundIndex++;
     this.pageTitle = `Rounds phase (round {this.roundState.roundIndex}): set strategic objectives`;
+    this.initializeStrategicObjectives();
   }
 
 }

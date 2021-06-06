@@ -55,9 +55,16 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .bold {
     font-weight: bold;
 }
+.italic {
+    font-style: italic;
+}
 .block {
     display: block;
 }
 .page-title {
     font-size: 16px;
+}
+.indented-block {
+    display: block;
+    margin-left: 2vw;
 }

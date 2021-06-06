@@ -12,5 +12,9 @@ import java.io.Serializable;
 public class StrategicObjective implements Serializable {
     private String name;
     private String description;
-    private StrategicObjectiveType type;
+    private boolean reached;
+    private int attritionCaused;
+    private int panicCaused;
+    private int disciplineRecovered;
+    //private StrategicObjectiveType type;
 }
