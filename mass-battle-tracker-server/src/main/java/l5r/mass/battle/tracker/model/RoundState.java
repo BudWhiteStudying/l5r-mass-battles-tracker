@@ -16,5 +16,6 @@ public class RoundState implements Serializable {
     private Commander actingCommander;
     private Character actingLeader;
     private Map<String,StrategicObjective> currentObjectivePerArmyName;
+    private Map<String, RoundScore> scorePerArmyName;
     private List<ExecutedAction> actionHistory;
 }

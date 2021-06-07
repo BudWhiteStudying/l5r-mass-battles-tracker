@@ -46,6 +46,7 @@ export class ObjectiveSelectionComponent implements OnInit {
                 ],
                 "currentCasualties": 0,
                 "currentPanic": 0,
+                "attritionReduction" : 0,
                 "description": "",
                 "discipline": 70,
                 "mainClan": "Scorpion",
@@ -86,6 +87,7 @@ export class ObjectiveSelectionComponent implements OnInit {
                 ],
                 "currentCasualties": 0,
                 "currentPanic": 0,
+                "attritionReduction" : 0,
                 "description": "",
                 "discipline": 80,
                 "mainClan": "Lion",
@@ -119,6 +121,7 @@ export class ObjectiveSelectionComponent implements OnInit {
     this.roundState = {
       roundIndex : 0,
       currentObjectivePerArmyName : {},
+      scorePerArmyName : {},
       actionHistory : []
     };
     }
@@ -144,10 +147,23 @@ export class ObjectiveSelectionComponent implements OnInit {
     );
   }
 
+  private initializeRoundScores() : void {
+    this.battle.involvedArmies.forEach(
+      army => {
+        this.roundState.scorePerArmyName[army.name] = {
+          totalAttritionSuffered : 0,
+          totalPanicSuffered : 0,
+          totalDisciplineRecovered : 0
+        };
+      }
+    );
+  }
+
   ngOnInit(): void {
     this.roundState.roundIndex++;
     this.pageTitle = `Rounds phase (round {this.roundState.roundIndex}): set strategic objectives`;
     this.initializeStrategicObjectives();
+    this.initializeRoundScores();
   }
 
 }

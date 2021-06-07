@@ -47,7 +47,7 @@ currentAction : ExecutedAction;
       });
     }
     else {
-      this.router.navigateByUrl('/play-battle/rounds/conditions-check', {
+      this.router.navigateByUrl('/play-battle/rounds/totals-check', {
         state: {battle: this.battle, roundState : this.roundState}
       });
     }

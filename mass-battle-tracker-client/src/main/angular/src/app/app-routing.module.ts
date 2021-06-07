@@ -16,8 +16,9 @@ import { LeadersSelectionComponent } from './play-battle/initiative/leaders-sele
 import { ObjectiveSelectionComponent } from './play-battle/rounds/objective-selection/objective-selection.component';
 import { LeaderSelectionComponent } from './play-battle/rounds/leader-selection/leader-selection.component';
 import { LeaderActionComponent } from './play-battle/rounds/leader-action/leader-action.component';
-import { ConditionsCheckComponent } from './play-battle/rounds/conditions-check/conditions-check.component';
+import { TotalsCheckComponent } from './play-battle/rounds/totals-check/totals-check.component';
 import { FirstMoveComponent } from './play-battle/rounds/first-move/first-move.component';
+import { RoundSummaryComponent } from './play-battle/rounds/round-summary/round-summary.component';
 
 
 const routes: Routes = [
@@ -70,8 +71,12 @@ const routes: Routes = [
     component: LeaderActionComponent
   },
   {
-    path: 'play-battle/rounds/conditions-check',
-    component: ConditionsCheckComponent
+    path: 'play-battle/rounds/totals-check',
+    component: TotalsCheckComponent
+  },
+  {
+    path: 'play-battle/rounds/round-summary',
+    component: RoundSummaryComponent
   },
   {
     path: '',

@@ -52,6 +52,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .extra-loosely-spaced {
     margin-top:2vw;
 }
+.space-after {
+    margin-bottom: 2vw;
+}
+.space-left {
+    margin-left : 2vw;
+}
 .bold {
     font-weight: bold;
 }
@@ -67,4 +73,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .indented-block {
     display: block;
     margin-left: 2vw;
+}
+.red {
+    color: red;
 }
