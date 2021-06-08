@@ -34,7 +34,7 @@ public class ApiController {
     )
     public Battle updateBattle(@RequestBody Battle battle) {
         logger.debug("Client wants us to update battle {} to {}", battle.getId(), battle);
-        return battleService.insertOrUpdateBattle(battle);
+        return battleService.updateBattle(battle);
     }
 
     @PostMapping(
@@ -42,13 +42,13 @@ public class ApiController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public Battle recordNewBattle(@RequestBody Battle battle) {
+    public Battle finalizeNewBattle(@RequestBody Battle battle) {
         logger.debug("Client wants us to record {}", battle);
-        return battleService.insertOrUpdateBattle(battle);
+        return battleService.updateBattle(battle);
     }
 
     @GetMapping(
-            value = ResourcePaths.Api.BATTLE,
+            value = ResourcePaths.Api.ALL_BATTLES,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public Battles getAllBattles() {

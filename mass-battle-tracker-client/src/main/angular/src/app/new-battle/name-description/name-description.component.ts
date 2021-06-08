@@ -6,6 +6,7 @@ import {isNullOrEmptyString} from "../../shared/utility/string.utility";
 
 import { Battle } from "../../shared/data-model/mass-battle-tracker-server";
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'name-description',
@@ -16,15 +17,17 @@ export class NameDescriptionComponent implements OnInit {
   
   pageTitle = "Set name and description of the Battle";
 
-  private battle: Battle = {name : "", description : "", involvedArmies : []};
+  private battle: Battle;
   private battleFormValueChangesSubscription: Subscription;
 
   newBattleForm: FormGroup;
 
   constructor(private formBuilder: FormBuilder,
-    private router:Router) { }
+    private router:Router,
+    private httpClient: HttpClient) { }
 
   ngOnInit(): void {
+    this.retrieveInitializedBattle();
     this.buildBattleForm();
   }
 
@@ -35,13 +38,42 @@ export class NameDescriptionComponent implements OnInit {
   onSubmit(): void {
     console.log("You clicked NEXT with name = " + this.newBattleForm.value.name + " and description = " + this.newBattleForm.value.description);
     if(this.newBattleForm.valid) {
+      this.updateLocalBattleToFormValues();
+      this.updateBattle();
       this.router.navigateByUrl('/new-battle/involved-armies', {
-        state: {battle: {name : this.newBattleForm.value.name, description : this.newBattleForm.value.description, involvedArmies : []}}
+        state: {battle: this.battle}
       });
     }
     else {
       console.warn("yeah no");
     }
+  }
+
+  //TODO: get rid of form
+  private updateLocalBattleToFormValues() : void {
+    this.battle.name = this.newBattleForm.value.name;
+    this.battle.description = this.newBattleForm.value.description;
+  }
+
+  private updateBattle(): void {
+    this.httpClient
+    .put<Battle>("/mass-battle-tracker/api/battle", this.battle).toPromise()
+    .then(
+      response => {
+        console.info("Remote battle has been updated:\n" + JSON.stringify(response));
+      }
+    );
+  }
+
+  private retrieveInitializedBattle(): void {
+    this.httpClient
+    .get<Battle>("/mass-battle-tracker/api/battle").toPromise()
+    .then(
+      response => {
+        console.info("Retrieved initialized battle: " + JSON.stringify(response));
+        this.battle = response;
+      }
+    );
   }
 
   private buildBattleForm(): void {

@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { Army, Battle, Character } from 'src/app/shared/data-model/mass-battle-tracker-server';
 import {isEqualWith} from "lodash";
 import {isNullOrEmptyString} from "../../shared/utility/string.utility";
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'involved-armies',
@@ -45,7 +46,8 @@ export class InvolvedArmiesComponent implements OnInit {
   newLeaderForm: FormGroup;
 
   constructor(private formBuilder: FormBuilder,
-    private router:Router) {
+    private router:Router,
+    private httpClient: HttpClient) {
     if(this.router.getCurrentNavigation().extras.state) {
       this.battle = this.router.getCurrentNavigation().extras.state.battle;
       this.buildArmyForm();
@@ -58,16 +60,11 @@ export class InvolvedArmiesComponent implements OnInit {
 
   ngOnInit(): void {
     console.log("Yo I received: " + JSON.stringify(this.battle));
-/*     if(this.battle) {
-      let mockArmy1 : Army = {name : "Army 1", description : "That one army", mainClan : "Lion", cohorts : [], strength : 100, discipline : 100, currentCasualties : 0, currentPanic : 0};
-      let mockArmy2 : Army = {name : "Army 2", description : "That other army", mainClan : "Crab", cohorts : [], strength : 100, discipline : 100, currentCasualties : 0, currentPanic : 0};
-      this.battle.involvedArmies.push(mockArmy1);
-      this.battle.involvedArmies.push(mockArmy2);
-    } */
   }
 
   onFinalSubmit(): void {
     if(this.battle.involvedArmies.length>=2) {
+      this.updateBattle();
       this.router.navigateByUrl('/new-battle/final-summary', {
         state: {battle: this.battle}
       });
@@ -140,7 +137,15 @@ export class InvolvedArmiesComponent implements OnInit {
     }
   }
 
-
+  private updateBattle(): void {
+    this.httpClient
+    .put<Battle>("/mass-battle-tracker/api/battle", this.battle).toPromise()
+    .then(
+      response => {
+        console.info("Remote battle has been updated:\n" + JSON.stringify(response));
+      }
+    );
+  }
 
   private buildArmyForm(): void {
     this.newArmyForm = this.formBuilder.group({
