@@ -24,9 +24,17 @@ export class RoundSummaryComponent implements OnInit {
 
 
   onSubmit() : void {
+    this.recordArmyTotals();
     console.debug("Upon submission, roundState is\n" + JSON.stringify(this.roundState, null, 4));
     this.router.navigateByUrl('/play-battle/rounds/objective-selection', {
       state: {battle: this.battle, roundState : this.roundState}
+    });
+  }
+
+  private recordArmyTotals() : void {
+    this.battle.involvedArmies.forEach(army => {
+      army.currentCasualties += this.roundState.scorePerArmyName[army.name].totalCasualtiesSuffered;
+      army.currentPanic += Math.max(0,this.roundState.scorePerArmyName[army.name].totalPanicSuffered-this.roundState.scorePerArmyName[army.name].totalPanicRemoved);
     });
   }
 }

@@ -27,7 +27,7 @@
             <br/>
             <mat-form-field class="block">
                 <mat-label>Discipline recovered</mat-label>
-                <input [disabled]="!currentAction.canRecoverDiscipline" [(ngModel)]="currentAction.disciplineRecovered" matInput type="number" name="discipline-recovered" required>
+                <input [disabled]="!currentAction.canRemovePanic" [(ngModel)]="currentAction.panicRemoved" matInput type="number" name="panic-removed" required>
             </mat-form-field>
             <br/>
         </div>

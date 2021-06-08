@@ -1,7 +1,7 @@
 package l5r.mass.battle.tracker.controller;
 
 import ch.qos.logback.classic.Logger;
-import l5r.mass.battle.tracker.model.Battle;
+import l5r.mass.battle.tracker.model.entity.Battle;
 import l5r.mass.battle.tracker.service.BattleService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.LoggerFactory;

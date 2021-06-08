@@ -1,4 +1,4 @@
-package l5r.mass.battle.tracker.model;
+package l5r.mass.battle.tracker.model.framework;
 
 public enum StrategicObjectiveType {
     TODO1,

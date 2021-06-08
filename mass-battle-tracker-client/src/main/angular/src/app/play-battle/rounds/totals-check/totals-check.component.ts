@@ -41,9 +41,9 @@ export class TotalsCheckComponent implements OnInit {
       .reduce((a,b)=>a+b,0);
   }
 
-  determineDisciplineRecovered(army : Army) : number {
+  determinePanicRemoved(army : Army) : number {
     return this.retrieveFriendlyActions(army)
-    .map(action => action.disciplineRecovered ? action.disciplineRecovered : 0)
+    .map(action => action.panicRemoved ? action.panicRemoved : 0)
     .reduce((a,b)=>a+b,0);
   }
 
@@ -57,9 +57,9 @@ export class TotalsCheckComponent implements OnInit {
     return this.determinePanicSuffered(army) + (panicFromHostileObjectives ? panicFromHostileObjectives : 0);
   }
 
-  determineTotalDisciplineRecovered(army : Army) : number {
-    let disiplineRecoveryFromFriendlyObjectives = this.retrieveFriendlyObjective(army)?.disciplineRecovered;
-    return this.determineDisciplineRecovered(army) + (disiplineRecoveryFromFriendlyObjectives ? disiplineRecoveryFromFriendlyObjectives : 0);
+  determineTotalPanicRemoved(army : Army) : number {
+    let disiplineRecoveryFromFriendlyObjectives = this.retrieveFriendlyObjective(army)?.panicRemoved;
+    return this.determinePanicRemoved(army) + (disiplineRecoveryFromFriendlyObjectives ? disiplineRecoveryFromFriendlyObjectives : 0);
   }
 
   private retrieveHostileActions(army : Army) : ExecutedAction[] {
@@ -91,7 +91,7 @@ export class TotalsCheckComponent implements OnInit {
       army => {
         this.roundState.scorePerArmyName[army.name].totalAttritionSuffered = this.determineTotalAttritionSuffered(army);
         this.roundState.scorePerArmyName[army.name].totalPanicSuffered = this.determineTotalPanicSuffered(army);
-        this.roundState.scorePerArmyName[army.name].totalDisciplineRecovered = this.determineTotalDisciplineRecovered(army);
+        this.roundState.scorePerArmyName[army.name].totalPanicRemoved = this.determineTotalPanicRemoved(army);
         this.roundState.scorePerArmyName[army.name].totalCasualtiesSuffered = this.roundState.scorePerArmyName[army.name].totalAttritionSuffered-army.attritionReduction;
       });
   }

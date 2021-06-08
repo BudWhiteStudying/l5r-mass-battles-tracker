@@ -12,6 +12,6 @@ import java.io.Serializable;
 public class RoundScore implements Serializable {
     private int totalAttritionSuffered;
     private int totalPanicSuffered;
-    private int totalDisciplineRecovered;
+    private int totalPanicRemoved;
     private int totalCasualtiesSuffered;
 }

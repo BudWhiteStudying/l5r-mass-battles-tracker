@@ -1,16 +1,62 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 2.30.840 on 2021-06-07 09:11:08.
+// Generated using typescript-generator version 2.30.840 on 2021-06-08 13:56:00.
+
+export interface ExecutedAction extends Action {
+    executionRound?: number;
+    perpetrator?: Character;
+    perpetratorStance?: ConflictStance;
+    attritionCaused?: number;
+    panicCaused?: number;
+    panicRemoved?: number;
+}
+
+export interface RoundScore extends Serializable {
+    totalAttritionSuffered?: number;
+    totalPanicSuffered?: number;
+    totalPanicRemoved?: number;
+    totalCasualtiesSuffered?: number;
+}
+
+export interface RoundState extends Serializable {
+    roundIndex?: number;
+    actingCommander?: Commander;
+    actingLeader?: Character;
+    currentObjectivePerArmyName?: { [index: string]: StrategicObjective };
+    scorePerArmyName?: { [index: string]: RoundScore };
+    actionHistory?: ExecutedAction[];
+}
+
+export interface Actions {
+    actions?: Action[];
+}
+
+export interface Armies {
+    armies?: Army[];
+}
+
+export interface Battles {
+    battles?: Battle[];
+}
+
+export interface Characters {
+    characters?: Character[];
+}
+
+export interface Objectives {
+    objectives?: StrategicObjective[];
+}
 
 export interface Action extends Serializable {
-    description?: string;
     type?: ActionType;
+    description?: string;
     canCauseAttrition?: boolean;
     canCausePanic?: boolean;
-    canRecoverDiscipline?: boolean;
+    canRemovePanic?: boolean;
 }
 
 export interface Army extends Serializable {
+    id?: number;
     name: string;
     description?: string;
     mainClan?: string;
@@ -32,11 +78,13 @@ export interface Battle extends Serializable {
 }
 
 export interface Character extends Serializable {
+    id?: number;
     name: string;
     clan: string;
 }
 
 export interface Cohort extends Serializable {
+    id?: number;
     name: string;
     leader: Character;
 }
@@ -45,38 +93,13 @@ export interface Commander extends Character {
     initiative?: number;
 }
 
-export interface ExecutedAction extends Action {
-    executionRound?: number;
-    perpetrator?: Character;
-    perpetratorStance?: ConflictStance;
-    attritionCaused?: number;
-    panicCaused?: number;
-    disciplineRecovered?: number;
-}
-
-export interface RoundScore extends Serializable {
-    totalAttritionSuffered?: number;
-    totalPanicSuffered?: number;
-    totalDisciplineRecovered?: number;
-    totalCasualtiesSuffered?: number;
-}
-
-export interface RoundState extends Serializable {
-    roundIndex?: number;
-    actingCommander?: Commander;
-    actingLeader?: Character;
-    currentObjectivePerArmyName?: { [index: string]: StrategicObjective };
-    scorePerArmyName?: { [index: string]: RoundScore };
-    actionHistory?: ExecutedAction[];
-}
-
 export interface StrategicObjective extends Serializable {
+    type?: StrategicObjectiveType;
     name?: string;
-    description?: string;
     reached?: boolean;
     attritionCaused?: number;
     panicCaused?: number;
-    disciplineRecovered?: number;
+    panicRemoved?: number;
 }
 
 export interface Serializable {

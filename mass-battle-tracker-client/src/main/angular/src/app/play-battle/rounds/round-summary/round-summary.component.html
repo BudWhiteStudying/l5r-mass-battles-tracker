@@ -6,22 +6,22 @@
             <mat-card class="loosely-spaced" *ngFor="let army of battle.involvedArmies">
                 <mat-label class="bold space-after">{{army.name}}</mat-label>
                 <br/>
-                <mat-form-field>
+                <mat-form-field class="loosely-spaced">
                     <mat-label>Attrition suffered</mat-label>
                     <input [(ngModel)]="roundState.scorePerArmyName[army.name].totalAttritionSuffered" matInput name="attr-{{army.name}}" disabled>
                 </mat-form-field>
                 <br/>
-                <mat-form-field>
+                <mat-form-field class="loosely-spaced">
                     <mat-label>Panic suffered</mat-label>
                     <input [(ngModel)]="roundState.scorePerArmyName[army.name].totalPanicSuffered" matInput name="pan-{{army.name}}" disabled>
                 </mat-form-field>
                 <br/>
-                <mat-form-field>
+                <mat-form-field class="loosely-spaced">
                     <mat-label>Panic recovered</mat-label>
-                    <input [(ngModel)]="roundState.scorePerArmyName[army.name].totalDisciplineRecovered" matInput name="pan-rec-{{army.name}}" disabled>
+                    <input [(ngModel)]="roundState.scorePerArmyName[army.name].totalPanicRemoved" matInput name="pan-rec-{{army.name}}" disabled>
                 </mat-form-field>
                 <br/>
-                <mat-form-field>
+                <mat-form-field class="loosely-spaced">
                     <mat-label>Casualties suffered</mat-label>
                     <input [(ngModel)]="roundState.scorePerArmyName[army.name].totalCasualtiesSuffered" matInput name="cas-{{army.name}}" required>
                 </mat-form-field>
@@ -33,17 +33,17 @@
             <mat-card class="loosely-spaced" *ngFor="let army of battle.involvedArmies">
                 <mat-label class="bold space-after">{{army.name}}</mat-label>
                 <br/>
-            <mat-form-field>
+            <mat-form-field class="loosely-spaced">
                 <mat-label>Total casualties suffered</mat-label>
-                <input [(ngModel)]="army.currentCasualties+roundState.scorePerArmyName[army.name].totalCasualtiesSuffered" matInput name="tot-cas-{{army.name}}" required>
+                <input [(ngModel)]="1*army.currentCasualties+1*roundState.scorePerArmyName[army.name].totalCasualtiesSuffered" matInput name="tot-cas-{{army.name}}" required>
             </mat-form-field>
-            <mat-label class="space-left" [class.red]="army.currentCasualties+roundState.scorePerArmyName[army.name].totalCasualtiesSuffered>army.strength">against Strength <b>{{army.strength}}</b></mat-label>
+            <mat-label class="space-left loosely-spaced" [class.red]="army.currentCasualties+roundState.scorePerArmyName[army.name].totalCasualtiesSuffered>army.strength">against Strength <b>{{army.strength}}</b></mat-label>
             <br/>
-            <mat-form-field>
+            <mat-form-field class="loosely-spaced">
                 <mat-label>Total panic suffered</mat-label>
-                <input [(ngModel)]="army.currentPanic+roundState.scorePerArmyName[army.name].totalPanicSuffered-roundState.scorePerArmyName[army.name].totalDisciplineRecovered" matInput name="tot-pan-{{army.name}}" required>
+                <input [(ngModel)]="1*army.currentPanic+roundState.scorePerArmyName[army.name].totalPanicSuffered-1*roundState.scorePerArmyName[army.name].totalPanicRemoved" matInput name="tot-pan-{{army.name}}" required>
             </mat-form-field>
-            <mat-label class="space-left" [class.red] = "army.currentPanic+roundState.scorePerArmyName[army.name].totalPanicSuffered-roundState.scorePerArmyName[army.name].totalDisciplineRecovered>army.discipline">against Discipline <b>{{army.discipline}}</b></mat-label>
+            <mat-label class="space-left loosely-spaced" [class.red] = "army.currentPanic+roundState.scorePerArmyName[army.name].totalPanicSuffered-roundState.scorePerArmyName[army.name].totalPanicRemoved>army.discipline">against Discipline <b>{{army.discipline}}</b></mat-label>
             </mat-card>
         </mat-card>
         <button mat-raised-button color="primary" class="small-button">Next</button>

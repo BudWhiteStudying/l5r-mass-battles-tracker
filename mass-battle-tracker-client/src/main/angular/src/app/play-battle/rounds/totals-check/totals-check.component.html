@@ -13,7 +13,7 @@
                     <mat-label class="italic">Panic suffered: {{determinePanicSuffered(army)}}</mat-label>
                 </div>
                 <div class="indented-block">
-                    <mat-label class="italic">Discipline recovered: {{determineDisciplineRecovered(army)}}</mat-label>
+                    <mat-label class="italic">Discipline recovered: {{determinePanicRemoved(army)}}</mat-label>
                 </div>
             </mat-card>
         </mat-card>
@@ -40,7 +40,7 @@
                     <br/>
                     <mat-form-field class="block">
                         <mat-label>Discipline recovered</mat-label>
-                        <input matInput [(ngModel)]="roundState.currentObjectivePerArmyName[army.name].disciplineRecovered" type="number" name="discipline-recovered-{{roundState.currentObjectivePerArmyName[army.name].name}}" required>
+                        <input matInput [(ngModel)]="roundState.currentObjectivePerArmyName[army.name].panicRemoved" type="number" name="panic-removed-{{roundState.currentObjectivePerArmyName[army.name].name}}" required>
                     </mat-form-field>
                 </div>
             </mat-card>
@@ -58,7 +58,7 @@
                     <mat-label [(ngModel)]="roundState" ngDefaultControl name="total-panic-{{army.name}}" class="italic">Total panic suffered: {{determineTotalPanicSuffered(army)}}</mat-label>
                 </div>
                 <div class="indented-block">
-                    <mat-label [(ngModel)]="roundState" ngDefaultControl name="total-disc-rec-{{army.name}}" class="italic">Total discipline recovered: {{determineTotalDisciplineRecovered(army)}}</mat-label>
+                    <mat-label [(ngModel)]="roundState" ngDefaultControl name="total-disc-rec-{{army.name}}" class="italic">Total discipline recovered: {{determineTotalPanicRemoved(army)}}</mat-label>
                 </div>
             </mat-card>
         </mat-card>

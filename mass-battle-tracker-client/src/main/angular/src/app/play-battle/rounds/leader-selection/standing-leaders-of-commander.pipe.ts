@@ -13,7 +13,8 @@ export class StandingLeadersOfCommanderPipe implements PipeTransform {
         // filter items array, items which match and return true will be
         // kept, false will be filtered out
         return battle.involvedArmies
-        .find(army => army.commander.name===roundState.actingCommander.name).leaders
+        .find(army => army.commander.name===roundState.actingCommander.name).cohorts
+            .map(cohort => cohort.leader)
             .filter(
                 leader =>
                 !roundState.actionHistory

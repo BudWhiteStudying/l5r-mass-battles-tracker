@@ -1,5 +1,8 @@
 package l5r.mass.battle.tracker.model;
 
+import l5r.mass.battle.tracker.model.entity.Action;
+import l5r.mass.battle.tracker.model.entity.Character;
+import l5r.mass.battle.tracker.model.framework.ConflictStance;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,5 +18,5 @@ public class ExecutedAction extends Action {
     private ConflictStance perpetratorStance;
     private int attritionCaused;
     private int panicCaused;
-    private int disciplineRecovered;
+    private int panicRemoved;
 }

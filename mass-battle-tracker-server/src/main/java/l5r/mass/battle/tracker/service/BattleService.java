@@ -1,12 +1,11 @@
 package l5r.mass.battle.tracker.service;
 
-import l5r.mass.battle.tracker.model.Battle;
+import l5r.mass.battle.tracker.model.entity.Battle;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class BattleService {
