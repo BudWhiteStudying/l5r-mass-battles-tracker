@@ -3,7 +3,11 @@ package l5r.mass.battle.tracker.controller;
 public class ResourcePaths {
     public static class Api {
         private Api(){}
-        
+
+        public static final String BASE = "/api";
+
+        public static final String BATTLE = "/battle";
+        public static final String ALL_BATTLES = "/all-battles";
     }
     public static class Admin {
         private Admin(){}

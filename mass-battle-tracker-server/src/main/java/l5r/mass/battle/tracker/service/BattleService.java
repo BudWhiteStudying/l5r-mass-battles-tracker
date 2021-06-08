@@ -1,27 +1,28 @@
 package l5r.mass.battle.tracker.service;
 
+import l5r.mass.battle.tracker.dao.BattleDao;
+import l5r.mass.battle.tracker.model.dto.Battles;
 import l5r.mass.battle.tracker.model.entity.Battle;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class BattleService {
 
-    public static final HashMap<Long, Battle> TEMP_BATTLE_DATABASE = new HashMap<>();
+    private final BattleDao battleDao;
 
-    public Battle recordNewBattle(Battle battle) {
-        final Long newBattleId = TEMP_BATTLE_DATABASE.keySet().stream().max(Long::compare).orElse(0L)+1;
-        battle.setId(newBattleId);
-        TEMP_BATTLE_DATABASE.put(
-                newBattleId,
-                battle);
-        return TEMP_BATTLE_DATABASE.get(newBattleId);
+    public Battle initializeNewBattle() {
+        return battleDao.save(new Battle());
     }
 
-    public List<Battle> getAllBattles() {
-        return new ArrayList<>(TEMP_BATTLE_DATABASE.values());
+    public Battle insertOrUpdateBattle(Battle battle) {
+        return battleDao.save(battle);
+    }
+
+    public Battles getAllBattles() {
+        return new Battles(battleDao.findAll());
     }
 }
