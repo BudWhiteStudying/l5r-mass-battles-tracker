@@ -1,11 +1,13 @@
 package l5r.mass.battle.tracker.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
@@ -23,13 +25,6 @@ public class Character implements Serializable {
     @NotNull
     private String clan;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
-    @JoinColumn(name= "ARMY_ID")
-    private Army army;
-
-    @JsonIgnore
-    @OneToOne(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
-    @JoinColumn(name= "COHORT_ID")
-    private Cohort cohort;
+    private Long armyId;
+    private Long cohortId;
 }
