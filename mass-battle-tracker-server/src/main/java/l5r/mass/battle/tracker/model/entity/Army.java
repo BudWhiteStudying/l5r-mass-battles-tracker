@@ -1,13 +1,11 @@
 package l5r.mass.battle.tracker.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
@@ -24,8 +22,14 @@ public class Army implements Serializable {
     private String name;
     private String description;
     private String mainClan;
+    @Transient
+    @JsonInclude
     private List<Cohort> cohorts;
+    @Transient
+    @JsonInclude
     private List<Character> leaders;
+    @Transient
+    @JsonInclude
     private Commander commander;
 
     private int strength;
@@ -34,4 +38,6 @@ public class Army implements Serializable {
 
     private int discipline;
     private int currentPanic;
+
+    private Long battleId;
 }

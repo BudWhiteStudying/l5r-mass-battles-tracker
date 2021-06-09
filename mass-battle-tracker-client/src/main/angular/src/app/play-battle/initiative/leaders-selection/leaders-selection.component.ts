@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Army, Battle, Cohort } from 'src/app/shared/data-model/mass-battle-tracker-server';
@@ -17,7 +18,8 @@ export class LeadersSelectionComponent implements OnInit {
   currentArmyName : String;
   notEnoughCohortsError : Boolean;
 
-  constructor(private router:Router) {
+  constructor(private router:Router,
+    private httpClient: HttpClient) {
     if(this.router.getCurrentNavigation().extras.state) {
       this.battle = this.router.getCurrentNavigation().extras.state.battle;
     }
@@ -51,6 +53,17 @@ export class LeadersSelectionComponent implements OnInit {
     this.cohortInProgress = {name : "", leader : {name : "", clan : ""}};
   }
 
+  private updateBattle(): void {
+    this.httpClient
+    .put<Battle>("/mass-battle-tracker/api/battle", this.battle).toPromise()
+    .then(
+      response => {
+        console.info("Remote battle has been updated:\n" + JSON.stringify(response));
+        this.battle = response;
+      }
+    );
+  }
+
   onSubmit(): void {
     console.debug("Upon submission, battle is:\n" + JSON.stringify(this.battle, null, 4));
     for (let army of this.battle.involvedArmies) {
@@ -60,6 +73,7 @@ export class LeadersSelectionComponent implements OnInit {
       }
     }
     if(!this.notEnoughCohortsError) {
+      this.updateBattle();
       this.router.navigateByUrl('/play-battle/rounds/objective-selection', {
         state: {battle: this.battle}
       });

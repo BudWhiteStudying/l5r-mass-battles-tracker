@@ -143,6 +143,7 @@ export class InvolvedArmiesComponent implements OnInit {
     .then(
       response => {
         console.info("Remote battle has been updated:\n" + JSON.stringify(response));
+        this.battle = response;
       }
     );
   }

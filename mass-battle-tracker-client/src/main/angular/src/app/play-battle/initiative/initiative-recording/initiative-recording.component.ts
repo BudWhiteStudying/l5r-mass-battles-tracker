@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Battle } from 'src/app/shared/data-model/mass-battle-tracker-server';
@@ -13,7 +14,8 @@ export class InitiativeRecordingComponent implements OnInit {
 
   battle : Battle;
 
-  constructor(private router:Router) {
+  constructor(private router:Router,
+    private httpClient: HttpClient) {
     if(this.router.getCurrentNavigation().extras.state) {
       this.battle = this.router.getCurrentNavigation().extras.state.battle;
     }
@@ -25,12 +27,24 @@ export class InitiativeRecordingComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  private updateBattle(): void {
+    this.httpClient
+    .put<Battle>("/mass-battle-tracker/api/battle", this.battle).toPromise()
+    .then(
+      response => {
+        console.info("Remote battle has been updated:\n" + JSON.stringify(response));
+        this.battle = response;
+      }
+    );
+  }
+
   onSubmit(): void {
     console.debug("Upon submission, battle is:\n" + JSON.stringify(this.battle, null, 4));
     if(this.battle.involvedArmies.filter(army => !army.commander.initiative).length>0) {
       console.warn("Not all initiative values have been set");
     }
     else {
+      this.updateBattle();
       this.router.navigateByUrl('/play-battle/initiative/leaders-selection', {
         state: {battle: this.battle}
       });

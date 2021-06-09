@@ -1,14 +1,12 @@
 package l5r.mass.battle.tracker.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -25,6 +23,8 @@ public class Battle implements Serializable {
     @NotNull
     private String name;
     private String description;
+    @Transient
+    @JsonInclude
     private List<Army> involvedArmies = new ArrayList<>();
 
     @JsonIgnore

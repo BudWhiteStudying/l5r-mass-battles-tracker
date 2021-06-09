@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Battle, RoundState } from 'src/app/shared/data-model/mass-battle-tracker-server';
@@ -14,7 +15,8 @@ export class ObjectiveSelectionComponent implements OnInit {
 
   pageTitle = `"Rounds" phase: set strategic objectives for the Round`;
 
-  constructor(private router:Router) {
+  constructor(private router:Router,
+    private httpClient: HttpClient) {
     if(this.router.getCurrentNavigation().extras.state) {
       this.battle = this.router.getCurrentNavigation().extras.state.battle;
       if(this.router.getCurrentNavigation().extras.state.roundState) {
@@ -35,6 +37,7 @@ export class ObjectiveSelectionComponent implements OnInit {
   }
 
   onSubmit(): void {
+    this.updateBattle();
     console.debug("Upon submission, roundState is\n" + JSON.stringify(this.roundState, null, 4));
 
     this.router.navigateByUrl('/play-battle/rounds/first-move', {
@@ -61,6 +64,17 @@ export class ObjectiveSelectionComponent implements OnInit {
           totalPanicSuffered : 0,
           totalPanicRemoved : 0
         };
+      }
+    );
+  }
+
+  private updateBattle(): void {
+    this.httpClient
+    .put<Battle>("/mass-battle-tracker/api/battle", this.battle).toPromise()
+    .then(
+      response => {
+        console.info("Remote battle has been updated:\n" + JSON.stringify(response));
+        this.battle = response;
       }
     );
   }

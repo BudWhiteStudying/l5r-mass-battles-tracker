@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { WebDriverLogger } from 'blocking-proxy/built/lib/webdriver_logger';
@@ -14,7 +15,8 @@ export class CommanderSelectionComponent implements OnInit {
 
   battle : Battle;
 
-  constructor(private router:Router) {
+  constructor(private router:Router,
+    private httpClient: HttpClient) {
     if(this.router.getCurrentNavigation().extras.state) {
       this.battle = this.router.getCurrentNavigation().extras.state.battle;
     }
@@ -70,12 +72,24 @@ export class CommanderSelectionComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  private updateBattle(): void {
+    this.httpClient
+    .put<Battle>("/mass-battle-tracker/api/battle", this.battle).toPromise()
+    .then(
+      response => {
+        console.info("Remote battle has been updated:\n" + JSON.stringify(response));
+        this.battle = response;
+      }
+    );
+  }
+
   onSubmit() : void {
     console.debug("Commanders have been selected, army is:\n" + JSON.stringify(this.battle, null, 4));
     if(this.battle.involvedArmies.filter(army => !army.commander).length>0) {
       console.warn("Not all commanders have been set");
     }
     else {
+      this.updateBattle();
       this.router.navigateByUrl('/play-battle/initiative/initiative-recording', {
         state: {battle: this.battle}
       });

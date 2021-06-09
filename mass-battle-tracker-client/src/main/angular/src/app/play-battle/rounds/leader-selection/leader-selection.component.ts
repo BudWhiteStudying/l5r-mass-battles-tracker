@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Battle, RoundState } from 'src/app/shared/data-model/mass-battle-tracker-server';
@@ -14,17 +15,30 @@ export class LeaderSelectionComponent implements OnInit {
   
   pageTitle = `"Rounds" phase: acting Commander picks a Leader`;
 
-  constructor(private router:Router) {
+  constructor(private router:Router,
+    private httpClient: HttpClient) {
     if(this.router.getCurrentNavigation().extras.state) {
       this.battle = this.router.getCurrentNavigation().extras.state.battle;
       this.roundState = this.router.getCurrentNavigation().extras.state.roundState;
     }
   }
 
+  private updateBattle(): void {
+    this.httpClient
+    .put<Battle>("/mass-battle-tracker/api/battle", this.battle).toPromise()
+    .then(
+      response => {
+        console.info("Remote battle has been updated:\n" + JSON.stringify(response));
+        this.battle = response;
+      }
+    );
+  }
+
   ngOnInit(): void {
   }
 
   onSubmit(): void {
+    this.updateBattle();
     this.router.navigateByUrl('/play-battle/rounds/leader-action', {
       state: {battle: this.battle, roundState : this.roundState}
     });

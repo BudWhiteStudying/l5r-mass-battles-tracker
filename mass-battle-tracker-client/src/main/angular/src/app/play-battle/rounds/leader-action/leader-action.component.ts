@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Action, ActionType, Battle, Character, Commander, ExecutedAction, RoundState } from 'src/app/shared/data-model/mass-battle-tracker-server';
@@ -27,11 +28,12 @@ export class LeaderActionComponent implements OnInit {
     }
   ];
   
-currentAction : ExecutedAction;
+  currentAction : ExecutedAction;
 
   pageTitle = `"Rounds" phase: chosen Leader performs his action`;
 
-  constructor(private router:Router) {
+  constructor(private router:Router,
+    private httpClient: HttpClient) {
     if(this.router.getCurrentNavigation().extras.state) {
       this.battle = this.router.getCurrentNavigation().extras.state.battle;
       this.roundState = this.router.getCurrentNavigation().extras.state.roundState;
@@ -40,6 +42,7 @@ currentAction : ExecutedAction;
 
   onSubmit(): void {
     this.recordAction(this.currentAction, this.roundState);
+    this.updateBattle();
     console.debug("Upon submission, roundState is\n" + JSON.stringify(this.roundState, null, 4));
     if(this.switchToNextCommander(this.roundState, this.battle)) {
       this.router.navigateByUrl('/play-battle/rounds/leader-selection', {
@@ -51,6 +54,17 @@ currentAction : ExecutedAction;
         state: {battle: this.battle, roundState : this.roundState}
       });
     }
+  }
+
+  private updateBattle(): void {
+    this.httpClient
+    .put<Battle>("/mass-battle-tracker/api/battle", this.battle).toPromise()
+    .then(
+      response => {
+        console.info("Remote battle has been updated:\n" + JSON.stringify(response));
+        this.battle = response;
+      }
+    );
   }
 
   recordAction(action : ExecutedAction, roundState : RoundState) : void {
@@ -78,7 +92,7 @@ currentAction : ExecutedAction;
   }
 
   private findAvailableLeaders (roundState : RoundState, battle : Battle, commander : Commander) : Character[]{
-    return battle.involvedArmies.find(army => army.commander==commander).leaders
+    return battle.involvedArmies.find(army => army.commander==commander).cohorts.map(cohort => cohort.leader)
     .filter(leader => !roundState.actionHistory.filter(action => action.executionRound===roundState.roundIndex).map(action => action.perpetrator).includes(leader));
   }
 

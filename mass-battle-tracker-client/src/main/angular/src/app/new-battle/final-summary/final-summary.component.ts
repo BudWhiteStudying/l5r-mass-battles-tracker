@@ -27,18 +27,16 @@ export class FinalSummaryComponent implements OnInit {
   }
 
   onFinalSubmit(): void {
-    console.debug("About to invoke");
     this.httpClient
     .post<Battle>("/mass-battle-tracker/api/battle",this.battle).toPromise()
     .then(
       response => {
         console.info("Finalized battle:\n" + JSON.stringify(response));
         this.router.navigateByUrl("/play-battle/initiative/commander-selection", {
-          state: {battle: this.battle}
+          state: {battle: response}
         });
       }
     );
-    this.router.navigateByUrl("/");
   }
 
 }

@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Battle, RoundState } from 'src/app/shared/data-model/mass-battle-tracker-server';
@@ -12,7 +13,8 @@ export class RoundSummaryComponent implements OnInit {
   battle : Battle;
   roundState : RoundState;
 
-  constructor(private router:Router) {
+  constructor(private router:Router,
+    private httpClient: HttpClient) {
     if(this.router.getCurrentNavigation().extras.state) {
       this.battle = this.router.getCurrentNavigation().extras.state.battle;
       this.roundState = this.router.getCurrentNavigation().extras.state.roundState;
@@ -22,9 +24,20 @@ export class RoundSummaryComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  private updateBattle(): void {
+    this.httpClient
+    .put<Battle>("/mass-battle-tracker/api/battle", this.battle).toPromise()
+    .then(
+      response => {
+        console.info("Remote battle has been updated:\n" + JSON.stringify(response));
+        this.battle = response;
+      }
+    );
+  }
 
   onSubmit() : void {
     this.recordArmyTotals();
+    this.updateBattle();
     console.debug("Upon submission, roundState is\n" + JSON.stringify(this.roundState, null, 4));
     this.router.navigateByUrl('/play-battle/rounds/objective-selection', {
       state: {battle: this.battle, roundState : this.roundState}

@@ -1,13 +1,11 @@
 package l5r.mass.battle.tracker.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
@@ -21,6 +19,8 @@ public class Cohort implements Serializable {
     Long id;
     @NotNull
     private String name;
+    @Transient
+    @JsonInclude
     private Character leader;
 
     private Long armyId;
