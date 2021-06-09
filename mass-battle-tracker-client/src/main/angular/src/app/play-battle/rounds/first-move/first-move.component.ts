@@ -26,22 +26,22 @@ export class FirstMoveComponent implements OnInit {
     this.pageTitle = `Rounds phase (round {this.roundState.roundIndex}): determine who makes the first move`;
   }
 
-  private updateBattle(): void {
-    this.httpClient
-    .put<Battle>("/mass-battle-tracker/api/battle", this.battle).toPromise()
+  private updateBattle(): Promise<Battle> {
+    return this.httpClient
+    .put<Battle>("/mass-battle-tracker/api/battle", this.battle).toPromise();
+  }
+
+  onSubmit(): void {
+    this.updateBattle()
     .then(
       response => {
         console.info("Remote battle has been updated:\n" + JSON.stringify(response));
         this.battle = response;
+        console.debug("Upon submission, roundState is\n" + JSON.stringify(this.roundState, null, 4));
+        this.router.navigateByUrl('/play-battle/rounds/leader-selection', {
+          state: {battle: this.battle, roundState : this.roundState}
+        });
       }
     );
-  }
-
-  onSubmit(): void {
-    this.updateBattle();
-    console.debug("Upon submission, roundState is\n" + JSON.stringify(this.roundState, null, 4));
-    this.router.navigateByUrl('/play-battle/rounds/leader-selection', {
-      state: {battle: this.battle, roundState : this.roundState}
-    });
   }
 }

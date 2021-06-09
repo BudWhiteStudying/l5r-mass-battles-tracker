@@ -53,15 +53,9 @@ export class LeadersSelectionComponent implements OnInit {
     this.cohortInProgress = {name : "", leader : {name : "", clan : ""}};
   }
 
-  private updateBattle(): void {
-    this.httpClient
-    .put<Battle>("/mass-battle-tracker/api/battle", this.battle).toPromise()
-    .then(
-      response => {
-        console.info("Remote battle has been updated:\n" + JSON.stringify(response));
-        this.battle = response;
-      }
-    );
+  private updateBattle(): Promise<Battle> {
+    return this.httpClient
+    .put<Battle>("/mass-battle-tracker/api/battle", this.battle).toPromise();
   }
 
   onSubmit(): void {
@@ -73,10 +67,16 @@ export class LeadersSelectionComponent implements OnInit {
       }
     }
     if(!this.notEnoughCohortsError) {
-      this.updateBattle();
-      this.router.navigateByUrl('/play-battle/rounds/objective-selection', {
-        state: {battle: this.battle}
-      });
+      this.updateBattle()
+      .then(
+        response => {
+          console.info("Remote battle has been updated:\n" + JSON.stringify(response));
+          this.battle = response;
+          this.router.navigateByUrl('/play-battle/rounds/objective-selection', {
+            state: {battle: this.battle}
+          });
+        }
+      );
     }
   }
 }

@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 2.30.840 on 2021-06-08 22:10:27.
+// Generated using typescript-generator version 2.30.840 on 2021-06-09 16:29:25.
 
 export interface ExecutedAction extends Action {
     executionRound?: number;
@@ -68,6 +68,7 @@ export interface Army extends Serializable {
     attritionReduction?: number;
     discipline?: number;
     currentPanic?: number;
+    battleId?: number;
 }
 
 export interface Battle extends Serializable {
@@ -81,12 +82,15 @@ export interface Character extends Serializable {
     id?: number;
     name: string;
     clan: string;
+    armyId?: number;
+    cohortId?: number;
 }
 
 export interface Cohort extends Serializable {
     id?: number;
     name: string;
-    leader: Character;
+    leader?: Character;
+    armyId?: number;
 }
 
 export interface Commander extends Character {
@@ -102,7 +106,32 @@ export interface StrategicObjective extends Serializable {
     panicRemoved?: number;
 }
 
+export interface WrappedException extends RuntimeException {
+}
+
 export interface Serializable {
+}
+
+export interface Throwable extends Serializable {
+    cause?: Throwable;
+    stackTrace?: StackTraceElement[];
+    message?: string;
+    localizedMessage?: string;
+    suppressed?: Throwable[];
+}
+
+export interface StackTraceElement extends Serializable {
+    methodName?: string;
+    fileName?: string;
+    lineNumber?: number;
+    className?: string;
+    nativeMethod?: boolean;
+}
+
+export interface RuntimeException extends Exception {
+}
+
+export interface Exception extends Throwable {
 }
 
 export const enum ActionType {

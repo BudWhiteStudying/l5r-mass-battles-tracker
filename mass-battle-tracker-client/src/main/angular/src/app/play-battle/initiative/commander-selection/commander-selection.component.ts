@@ -72,15 +72,9 @@ export class CommanderSelectionComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  private updateBattle(): void {
-    this.httpClient
-    .put<Battle>("/mass-battle-tracker/api/battle", this.battle).toPromise()
-    .then(
-      response => {
-        console.info("Remote battle has been updated:\n" + JSON.stringify(response));
-        this.battle = response;
-      }
-    );
+  private updateBattle(): Promise<Battle> {
+    return this.httpClient
+    .put<Battle>("/mass-battle-tracker/api/battle", this.battle).toPromise();
   }
 
   onSubmit() : void {
@@ -89,10 +83,16 @@ export class CommanderSelectionComponent implements OnInit {
       console.warn("Not all commanders have been set");
     }
     else {
-      this.updateBattle();
-      this.router.navigateByUrl('/play-battle/initiative/initiative-recording', {
-        state: {battle: this.battle}
-      });
+      this.updateBattle()
+      .then(
+        response => {
+          console.info("Remote battle has been updated:\n" + JSON.stringify(response));
+          this.battle = response;
+          this.router.navigateByUrl('/play-battle/initiative/initiative-recording', {
+            state: {battle: this.battle}
+          });
+        }
+      );
     }
   }
 }

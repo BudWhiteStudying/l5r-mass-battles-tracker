@@ -24,24 +24,24 @@ export class RoundSummaryComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  private updateBattle(): void {
-    this.httpClient
-    .put<Battle>("/mass-battle-tracker/api/battle", this.battle).toPromise()
-    .then(
-      response => {
-        console.info("Remote battle has been updated:\n" + JSON.stringify(response));
-        this.battle = response;
-      }
-    );
+  private updateBattle(): Promise<Battle> {
+    return this.httpClient
+    .put<Battle>("/mass-battle-tracker/api/battle", this.battle).toPromise();
   }
 
   onSubmit() : void {
     this.recordArmyTotals();
-    this.updateBattle();
-    console.debug("Upon submission, roundState is\n" + JSON.stringify(this.roundState, null, 4));
-    this.router.navigateByUrl('/play-battle/rounds/objective-selection', {
-      state: {battle: this.battle, roundState : this.roundState}
-    });
+    this.updateBattle()
+    .then(
+      response => {
+        console.info("Remote battle has been updated:\n" + JSON.stringify(response));
+        this.battle = response;
+        console.debug("Upon submission, roundState is\n" + JSON.stringify(this.roundState, null, 4));
+        this.router.navigateByUrl('/play-battle/rounds/objective-selection', {
+          state: {battle: this.battle, roundState : this.roundState}
+        });
+      }
+    );
   }
 
   private recordArmyTotals() : void {

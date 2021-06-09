@@ -23,24 +23,24 @@ export class LeaderSelectionComponent implements OnInit {
     }
   }
 
-  private updateBattle(): void {
-    this.httpClient
-    .put<Battle>("/mass-battle-tracker/api/battle", this.battle).toPromise()
-    .then(
-      response => {
-        console.info("Remote battle has been updated:\n" + JSON.stringify(response));
-        this.battle = response;
-      }
-    );
+  private updateBattle(): Promise<Battle> {
+    return this.httpClient
+    .put<Battle>("/mass-battle-tracker/api/battle", this.battle).toPromise();
   }
 
   ngOnInit(): void {
   }
 
   onSubmit(): void {
-    this.updateBattle();
-    this.router.navigateByUrl('/play-battle/rounds/leader-action', {
-      state: {battle: this.battle, roundState : this.roundState}
-    });
+    this.updateBattle()
+    .then(
+      response => {
+        console.info("Remote battle has been updated:\n" + JSON.stringify(response));
+        this.battle = response;
+        this.router.navigateByUrl('/play-battle/rounds/leader-action', {
+          state: {battle: this.battle, roundState : this.roundState}
+        });
+      }
+    );
   }
 }

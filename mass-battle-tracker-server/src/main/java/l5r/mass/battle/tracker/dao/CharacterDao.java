@@ -11,6 +11,6 @@ public interface CharacterDao extends JpaRepository<Character, Long> {
     List<Character> findByArmyId(Long armyId);
     List<Character> findByCohortId(Long cohortId);
     @Query("SELECT c FROM Character c WHERE c.armyId = ?1 AND TYPE(c) = ?2")
-    Optional<Character> findOneByArmyIdAndDtype(Long armyId, String dType);
-    Optional<Character> findOneByCohortId(Long cohortId);
+    List<Character> findOneByArmyIdAndDtype(Long armyId, Class<?> dType);
+    List<Character> findOneByCohortId(Long cohortId);
 }

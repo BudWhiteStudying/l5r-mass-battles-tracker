@@ -39,10 +39,16 @@ export class NameDescriptionComponent implements OnInit {
     console.log("You clicked NEXT with name = " + this.newBattleForm.value.name + " and description = " + this.newBattleForm.value.description);
     if(this.newBattleForm.valid) {
       this.updateLocalBattleToFormValues();
-      this.updateBattle();
-      this.router.navigateByUrl('/new-battle/involved-armies', {
-        state: {battle: this.battle}
-      });
+      this.updateBattle()
+      .then(
+        response => {
+          console.info("Remote battle has been updated:\n" + JSON.stringify(response));
+          this.battle = response;
+          this.router.navigateByUrl('/new-battle/involved-armies', {
+            state: {battle: this.battle}
+          });
+        }
+      );
     }
     else {
       console.warn("yeah no");
@@ -55,14 +61,9 @@ export class NameDescriptionComponent implements OnInit {
     this.battle.description = this.newBattleForm.value.description;
   }
 
-  private updateBattle(): void {
-    this.httpClient
-    .put<Battle>("/mass-battle-tracker/api/battle", this.battle).toPromise()
-    .then(
-      response => {
-        console.info("Remote battle has been updated:\n" + JSON.stringify(response));
-      }
-    );
+  private updateBattle(): Promise<Battle> {
+    return this.httpClient
+    .put<Battle>("/mass-battle-tracker/api/battle", this.battle).toPromise();
   }
 
   private retrieveInitializedBattle(): void {

@@ -42,29 +42,29 @@ export class LeaderActionComponent implements OnInit {
 
   onSubmit(): void {
     this.recordAction(this.currentAction, this.roundState);
-    this.updateBattle();
-    console.debug("Upon submission, roundState is\n" + JSON.stringify(this.roundState, null, 4));
-    if(this.switchToNextCommander(this.roundState, this.battle)) {
-      this.router.navigateByUrl('/play-battle/rounds/leader-selection', {
-        state: {battle: this.battle, roundState : this.roundState}
-      });
-    }
-    else {
-      this.router.navigateByUrl('/play-battle/rounds/totals-check', {
-        state: {battle: this.battle, roundState : this.roundState}
-      });
-    }
-  }
-
-  private updateBattle(): void {
-    this.httpClient
-    .put<Battle>("/mass-battle-tracker/api/battle", this.battle).toPromise()
+    this.updateBattle()
     .then(
       response => {
         console.info("Remote battle has been updated:\n" + JSON.stringify(response));
         this.battle = response;
+        console.debug("Upon submission, roundState is\n" + JSON.stringify(this.roundState, null, 4));
+        if(this.switchToNextCommander(this.roundState, this.battle)) {
+          this.router.navigateByUrl('/play-battle/rounds/leader-selection', {
+            state: {battle: this.battle, roundState : this.roundState}
+          });
+        }
+        else {
+          this.router.navigateByUrl('/play-battle/rounds/totals-check', {
+            state: {battle: this.battle, roundState : this.roundState}
+          });
+        }
       }
     );
+  }
+
+  private updateBattle(): Promise<Battle> {
+    return this.httpClient
+    .put<Battle>("/mass-battle-tracker/api/battle", this.battle).toPromise();
   }
 
   recordAction(action : ExecutedAction, roundState : RoundState) : void {

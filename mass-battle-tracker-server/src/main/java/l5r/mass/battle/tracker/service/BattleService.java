@@ -8,6 +8,7 @@ import l5r.mass.battle.tracker.dao.CohortDao;
 import l5r.mass.battle.tracker.model.dto.Battles;
 import l5r.mass.battle.tracker.model.entity.Army;
 import l5r.mass.battle.tracker.model.entity.Battle;
+import l5r.mass.battle.tracker.model.entity.Character;
 import l5r.mass.battle.tracker.model.entity.Cohort;
 import l5r.mass.battle.tracker.model.entity.Commander;
 import l5r.mass.battle.tracker.model.framework.exception.WrappedException;
@@ -50,6 +51,7 @@ public class BattleService {
                         return fetchBattleChildrenProperties(battle);
                     }
                     catch (Exception e) {
+                        logger.error("Failed fetching children props: {}", e.getMessage(), e);
                         return null;
                     }
                 }
@@ -58,52 +60,69 @@ public class BattleService {
         .collect(Collectors.toList()));
     }
 
-    //TODO: set relation IDs on children - currently null
     private Battle cascadeSaveBattle(Battle updatedBattle) {
         battleDao.save(updatedBattle);
         updatedBattle.setInvolvedArmies(
                 updatedBattle.getInvolvedArmies().stream().map(
-                        this::cascadeSaveArmy
+                        army -> cascadeSaveArmy(army, updatedBattle)
                 )
                 .collect(Collectors.toList())
         );
         return updatedBattle;
     }
 
-    private Army cascadeSaveArmy(Army updatedArmy) {
+    private Army cascadeSaveArmy(Army updatedArmy, Battle parentBattle) {
+        updatedArmy.setBattleId(parentBattle.getId());
+        logger.info("About to save army {} with id {}", updatedArmy.getName(), updatedArmy.getId());
         armyDao.save(updatedArmy);
         updatedArmy.setLeaders(
                 updatedArmy.getLeaders().stream().map(
-                        characterDao::save
+                        leader -> {
+                            leader.setArmyId(updatedArmy.getId());
+                            return characterDao.saveAndFlush(leader);
+                        }
                 )
                 .collect(Collectors.toList())
         );
         updatedArmy.setCohorts(
                 updatedArmy.getCohorts().stream().map(
-                        this::cascadeSaveCohort
+                        cohort -> cascadeSaveCohort(cohort, updatedArmy)
                 )
                 .collect(Collectors.toList())
         );
         if(updatedArmy.getCommander()!=null) {
+            updatedArmy.getCommander().setArmyId(updatedArmy.getId());
+            if(updatedArmy.getCommander().getId()!=null) {
+                Character existingCharacter = characterDao.findById(updatedArmy.getCommander().getId()).orElse(null);
+                if(!(existingCharacter instanceof Commander)) {
+                    logger.info("Promoting {} to commander (erasing him as common character)", existingCharacter.getName());
+                    characterDao.deleteById(existingCharacter.getId());
+                    characterDao.flush();   //we can eventually remove this, I just dont like the ID raising with no reason
+                }
+            }
+            logger.info("About to persist commander {} with id {}", updatedArmy.getCommander().getName(), updatedArmy.getCommander().getId());
             updatedArmy.setCommander(
-                    characterDao.save(updatedArmy.getCommander())
+                    characterDao.saveAndFlush(updatedArmy.getCommander())
             );
         }
 
         return updatedArmy;
     }
 
-    private Cohort cascadeSaveCohort(Cohort updatedCohort) {
-        cohortDao.save(updatedCohort);
+    private Cohort cascadeSaveCohort(Cohort updatedCohort, Army parentArmy) {
+        updatedCohort.setArmyId(parentArmy.getId());
+        Long cohortId = cohortDao.save(updatedCohort).getId();
         if(updatedCohort.getLeader()!=null) {
+            updatedCohort.getLeader().setArmyId(parentArmy.getId());
+            updatedCohort.getLeader().setCohortId(cohortId);
             updatedCohort.setLeader(
-                    characterDao.save(updatedCohort.getLeader())
+                    characterDao.saveAndFlush(updatedCohort.getLeader())
             );
         }
         return updatedCohort;
     }
 
-    private Battle fetchBattleChildrenProperties(Battle baseBattleRecord) throws Exception {
+    private Battle fetchBattleChildrenProperties(Battle baseBattleRecord) {
         baseBattleRecord.setInvolvedArmies(
                 armyDao.findByBattleId(baseBattleRecord.getId()).stream().map(
                         army -> {
@@ -120,7 +139,7 @@ public class BattleService {
         return baseBattleRecord;
     }
 
-    private Army fetchArmyChildrenProperties(Army baseArmyRecord) throws Exception {
+    private Army fetchArmyChildrenProperties(Army baseArmyRecord) {
         baseArmyRecord.setLeaders(
                 characterDao.findByArmyId(baseArmyRecord.getId())
         );
@@ -137,20 +156,22 @@ public class BattleService {
             )
             .collect(Collectors.toList())
         );
-        baseArmyRecord.setCommander(
-                (Commander) characterDao.findOneByArmyIdAndDtype(baseArmyRecord.getId(), Commander.class.getTypeName()).orElseThrow(
-                        Exception::new
-                )
-        );
+        final List<Character> armyCommanderCandidates = characterDao.findOneByArmyIdAndDtype(baseArmyRecord.getId(), Commander.class);
+        if(!armyCommanderCandidates.isEmpty()) {
+            baseArmyRecord.setCommander(
+                    (Commander) armyCommanderCandidates.get(0)
+            );
+        }
         return baseArmyRecord;
     }
 
-    private Cohort fetchCohortChildrenProperties(Cohort baseCohortRecord) throws Exception {
-        baseCohortRecord.setLeader(
-                characterDao.findOneByCohortId(baseCohortRecord.getId()).orElseThrow(
-                        Exception::new
-                )
-        );
+    private Cohort fetchCohortChildrenProperties(Cohort baseCohortRecord) {
+        final List<Character> cohortLeaderCandidates = characterDao.findOneByCohortId(baseCohortRecord.getId());
+        if(!cohortLeaderCandidates.isEmpty()) {
+            baseCohortRecord.setLeader(
+                    cohortLeaderCandidates.get(0)
+            );
+        }
         return baseCohortRecord;
     }
 }

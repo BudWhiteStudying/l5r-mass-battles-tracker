@@ -25,11 +25,17 @@ export class TotalsCheckComponent implements OnInit {
 
   onSubmit() : void {
     this.registerTotals();
-    this.updateBattle();
-    console.debug("Upon submission, roundState is\n" + JSON.stringify(this.roundState, null, 4));
-    this.router.navigateByUrl('/play-battle/rounds/round-summary', {
-      state: {battle: this.battle, roundState : this.roundState}
-    });
+    this.updateBattle()
+    .then(
+      response => {
+        console.info("Remote battle has been updated:\n" + JSON.stringify(response));
+        this.battle = response;
+        console.debug("Upon submission, roundState is\n" + JSON.stringify(this.roundState, null, 4));
+        this.router.navigateByUrl('/play-battle/rounds/round-summary', {
+          state: {battle: this.battle, roundState : this.roundState}
+        });
+      }
+    );
   }
 
   determineAttritionSuffered(army : Army) : number {
@@ -65,15 +71,9 @@ export class TotalsCheckComponent implements OnInit {
     return this.determinePanicRemoved(army) + (disiplineRecoveryFromFriendlyObjectives ? disiplineRecoveryFromFriendlyObjectives : 0);
   }
 
-  private updateBattle(): void {
-    this.httpClient
-    .put<Battle>("/mass-battle-tracker/api/battle", this.battle).toPromise()
-    .then(
-      response => {
-        console.info("Remote battle has been updated:\n" + JSON.stringify(response));
-        this.battle = response;
-      }
-    );
+  private updateBattle(): Promise<Battle> {
+    return this.httpClient
+    .put<Battle>("/mass-battle-tracker/api/battle", this.battle).toPromise();
   }
 
   private retrieveHostileActions(army : Army) : ExecutedAction[] {

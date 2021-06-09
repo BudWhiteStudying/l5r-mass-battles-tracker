@@ -58,16 +58,19 @@ export class InvolvedArmiesComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {
-    console.log("Yo I received: " + JSON.stringify(this.battle));
-  }
+  ngOnInit(): void {}
 
   onFinalSubmit(): void {
     if(this.battle.involvedArmies.length>=2) {
-      this.updateBattle();
-      this.router.navigateByUrl('/new-battle/final-summary', {
-        state: {battle: this.battle}
-      });
+      this.updateBattle().then(
+        response => {
+          console.info("Remote battle has been updated:\n" + JSON.stringify(response));
+          this.battle = response;
+          this.router.navigateByUrl('/new-battle/final-summary', {
+            state: {battle: this.battle}
+          });
+        }
+      );
     }
     else {
       this.notEnoughArmiesError = true;
@@ -137,15 +140,9 @@ export class InvolvedArmiesComponent implements OnInit {
     }
   }
 
-  private updateBattle(): void {
-    this.httpClient
-    .put<Battle>("/mass-battle-tracker/api/battle", this.battle).toPromise()
-    .then(
-      response => {
-        console.info("Remote battle has been updated:\n" + JSON.stringify(response));
-        this.battle = response;
-      }
-    );
+  private updateBattle(): Promise<Battle> {
+    return this.httpClient
+    .put<Battle>("/mass-battle-tracker/api/battle", this.battle).toPromise();
   }
 
   private buildArmyForm(): void {
