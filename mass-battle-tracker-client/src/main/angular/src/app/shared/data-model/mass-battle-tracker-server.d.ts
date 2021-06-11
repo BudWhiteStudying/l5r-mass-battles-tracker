@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 2.30.840 on 2021-06-09 16:29:25.
+// Generated using typescript-generator version 2.30.840 on 2021-06-11 14:47:31.
 
 export interface ExecutedAction extends Action {
     executionRound?: number;

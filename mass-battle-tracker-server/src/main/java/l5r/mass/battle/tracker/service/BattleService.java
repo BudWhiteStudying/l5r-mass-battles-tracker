@@ -75,11 +75,42 @@ public class BattleService {
         updatedArmy.setBattleId(parentBattle.getId());
         logger.info("About to save army {} with id {}", updatedArmy.getName(), updatedArmy.getId());
         armyDao.save(updatedArmy);
+        if(updatedArmy.getCommander()!=null) {
+            updatedArmy.getCommander().setArmyId(updatedArmy.getId());
+            if(updatedArmy.getCommander().getId()!=null) {
+                Character existingCharacter = characterDao.findById(updatedArmy.getCommander().getId()).orElse(null);
+                if(existingCharacter!=null && !(existingCharacter instanceof Commander)) {
+                    logger.info("Promoting {} to commander (erasing him as common character)", existingCharacter.getName());
+                    characterDao.deleteById(existingCharacter.getId());
+                    updatedArmy.getLeaders().removeIf(
+                            leader -> leader.getId().equals(existingCharacter.getId())
+                    );
+                    characterDao.flush();   //we can eventually remove this, I just dont like the ID raising with no reason
+                }
+            }
+            logger.info("About to persist commander {} with id {}", updatedArmy.getCommander().getName(), updatedArmy.getCommander().getId());
+            updatedArmy.setCommander(
+                    characterDao.saveAndFlush(updatedArmy.getCommander())
+            );
+            updatedArmy.getLeaders().add(updatedArmy.getCommander());
+        }
         updatedArmy.setLeaders(
                 updatedArmy.getLeaders().stream().map(
                         leader -> {
                             leader.setArmyId(updatedArmy.getId());
-                            return characterDao.saveAndFlush(leader);
+                            final Character existingLeader = leader.getId()!=null ? characterDao.findById(leader.getId()).orElse(null) : null;
+                            if(existingLeader!=null) {
+                                if(existingLeader instanceof Commander) {
+                                    ((Commander) existingLeader).update(leader);
+                                    return characterDao.saveAndFlush((Commander)existingLeader);
+                                }
+                                else {
+                                    return characterDao.saveAndFlush(leader);
+                                }
+                            }
+                            else {
+                                return characterDao.saveAndFlush(leader);
+                            }
                         }
                 )
                 .collect(Collectors.toList())
@@ -90,21 +121,6 @@ public class BattleService {
                 )
                 .collect(Collectors.toList())
         );
-        if(updatedArmy.getCommander()!=null) {
-            updatedArmy.getCommander().setArmyId(updatedArmy.getId());
-            if(updatedArmy.getCommander().getId()!=null) {
-                Character existingCharacter = characterDao.findById(updatedArmy.getCommander().getId()).orElse(null);
-                if(!(existingCharacter instanceof Commander)) {
-                    logger.info("Promoting {} to commander (erasing him as common character)", existingCharacter.getName());
-                    characterDao.deleteById(existingCharacter.getId());
-                    characterDao.flush();   //we can eventually remove this, I just dont like the ID raising with no reason
-                }
-            }
-            logger.info("About to persist commander {} with id {}", updatedArmy.getCommander().getName(), updatedArmy.getCommander().getId());
-            updatedArmy.setCommander(
-                    characterDao.saveAndFlush(updatedArmy.getCommander())
-            );
-        }
 
         return updatedArmy;
     }

@@ -15,4 +15,10 @@ import javax.persistence.Entity;
 public class Commander extends Character {
     private Long armyId;
     private int initiative;
+
+    public void update(Character leader) {
+        this.setClan(leader.getClan());
+        this.setCohortId(leader.getCohortId());
+        this.setName(leader.getName());
+    }
 }
