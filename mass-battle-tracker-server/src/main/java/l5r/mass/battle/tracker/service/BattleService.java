@@ -11,6 +11,7 @@ import l5r.mass.battle.tracker.model.entity.Battle;
 import l5r.mass.battle.tracker.model.entity.Character;
 import l5r.mass.battle.tracker.model.entity.Cohort;
 import l5r.mass.battle.tracker.model.entity.Commander;
+import l5r.mass.battle.tracker.model.framework.CharacterType;
 import l5r.mass.battle.tracker.model.framework.exception.WrappedException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.LoggerFactory;
@@ -73,26 +74,30 @@ public class BattleService {
 
     private Army cascadeSaveArmy(Army updatedArmy, Battle parentBattle) {
         updatedArmy.setBattleId(parentBattle.getId());
-        logger.info("About to save army {} with id {}", updatedArmy.getName(), updatedArmy.getId());
+        logger.info("About to save army \"{}\" with id {}", updatedArmy.getName(), updatedArmy.getId());
         armyDao.save(updatedArmy);
-        if(updatedArmy.getCommander()!=null) {
+        if(updatedArmy.getCommander()!=null && updatedArmy.getCommander().getId()!=null) {
             updatedArmy.getCommander().setArmyId(updatedArmy.getId());
-            if(updatedArmy.getCommander().getId()!=null) {
-                Character existingCharacter = characterDao.findById(updatedArmy.getCommander().getId()).orElse(null);
-                if(existingCharacter!=null && !(existingCharacter instanceof Commander)) {
-                    logger.info("Promoting {} to commander (erasing him as common character)", existingCharacter.getName());
-                    characterDao.deleteById(existingCharacter.getId());
-                    updatedArmy.getLeaders().removeIf(
-                            leader -> leader.getId().equals(existingCharacter.getId())
-                    );
-                    characterDao.flush();   //we can eventually remove this, I just dont like the ID raising with no reason
-                }
+            updatedArmy.getCommander().setCharacterType(CharacterType.COMMANDER);
+            Character existingCharacter = characterDao.findById(updatedArmy.getCommander().getId()).orElse(null);
+            if(existingCharacter!=null && !(existingCharacter instanceof Commander)) {
+                logger.info("Promoting \"{}\" to commander (erasing them as common character)", existingCharacter.getName());
+                characterDao.deleteById(existingCharacter.getId());
+                logger.info("\"{}\" deleted from the Character table", existingCharacter.getName());
+                logger.info("About to remove \"{}\" from the leaders list, current size of the list is {}", existingCharacter.getName(), updatedArmy.getLeaders().size());
+                updatedArmy.getLeaders().removeIf(
+                        leader -> leader.getId().equals(existingCharacter.getId())
+                );
+                logger.info("Removed \"{}\" from the leaders list, new size of the list is {}", existingCharacter.getName(), updatedArmy.getLeaders().size());
+                logger.info("About to persist commander \"{}\" with id {}", updatedArmy.getCommander().getName(), updatedArmy.getCommander().getId());
+                updatedArmy.setCommander(
+                        characterDao.saveAndFlush(updatedArmy.getCommander())
+                );
+                updatedArmy.getLeaders().add(updatedArmy.getCommander());
             }
-            logger.info("About to persist commander {} with id {}", updatedArmy.getCommander().getName(), updatedArmy.getCommander().getId());
-            updatedArmy.setCommander(
-                    characterDao.saveAndFlush(updatedArmy.getCommander())
-            );
-            updatedArmy.getLeaders().add(updatedArmy.getCommander());
+        }
+        else {
+            logger.info("Army \"{}\" doesn't have a commander", updatedArmy.getName());
         }
         updatedArmy.setLeaders(
                 updatedArmy.getLeaders().stream().map(
@@ -131,6 +136,8 @@ public class BattleService {
         if(updatedCohort.getLeader()!=null) {
             updatedCohort.getLeader().setArmyId(parentArmy.getId());
             updatedCohort.getLeader().setCohortId(cohortId);
+            logger.info("About to update \"{}\" as cohort leader, full object is {}", updatedCohort.getLeader().getName(), updatedCohort.getLeader());
+            characterDao.flush();
             updatedCohort.setLeader(
                     characterDao.saveAndFlush(updatedCohort.getLeader())
             );

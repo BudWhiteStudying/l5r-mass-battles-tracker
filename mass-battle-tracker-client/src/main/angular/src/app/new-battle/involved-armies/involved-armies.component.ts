@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { Army, Battle, Character } from 'src/app/shared/data-model/mass-battle-tracker-server';
+import { Army, Battle, Character, CharacterType } from 'src/app/shared/data-model/mass-battle-tracker-server';
 import {isEqualWith} from "lodash";
 import {isNullOrEmptyString} from "../../shared/utility/string.utility";
 import { HttpClient } from '@angular/common/http';
@@ -36,7 +36,8 @@ export class InvolvedArmiesComponent implements OnInit {
 
   leaderInProgress : Character = {
     name : "",
-    clan : ""
+    clan : "",
+    characterType : CharacterType.LEADER
   };
 
   private armyFormValueChangesSubscription: Subscription;
@@ -135,7 +136,8 @@ export class InvolvedArmiesComponent implements OnInit {
       this.leaderInProgress = 
         {
           name : "",
-          clan : ""
+          clan : "",
+          characterType : CharacterType.LEADER
         };
     }
   }

@@ -1,10 +1,10 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 2.30.840 on 2021-06-11 14:47:31.
+// Generated using typescript-generator version 2.30.840 on 2022-04-03 23:52:35.
 
 export interface ExecutedAction extends Action {
     executionRound?: number;
-    perpetrator?: Character;
+    perpetrator?: CharacterUnion;
     perpetratorStance?: ConflictStance;
     attritionCaused?: number;
     panicCaused?: number;
@@ -21,7 +21,7 @@ export interface RoundScore extends Serializable {
 export interface RoundState extends Serializable {
     roundIndex?: number;
     actingCommander?: Commander;
-    actingLeader?: Character;
+    actingLeader?: CharacterUnion;
     currentObjectivePerArmyName?: { [index: string]: StrategicObjective };
     scorePerArmyName?: { [index: string]: RoundScore };
     actionHistory?: ExecutedAction[];
@@ -40,7 +40,7 @@ export interface Battles {
 }
 
 export interface Characters {
-    characters?: Character[];
+    characters?: CharacterUnion[];
 }
 
 export interface Objectives {
@@ -61,7 +61,7 @@ export interface Army extends Serializable {
     description?: string;
     mainClan?: string;
     cohorts?: Cohort[];
-    leaders?: Character[];
+    leaders?: CharacterUnion[];
     commander?: Commander;
     strength?: number;
     currentCasualties?: number;
@@ -79,6 +79,7 @@ export interface Battle extends Serializable {
 }
 
 export interface Character extends Serializable {
+    characterType: "LEADER" | "COMMANDER";
     id?: number;
     name: string;
     clan: string;
@@ -89,11 +90,12 @@ export interface Character extends Serializable {
 export interface Cohort extends Serializable {
     id?: number;
     name: string;
-    leader?: Character;
+    leader?: CharacterUnion;
     armyId?: number;
 }
 
 export interface Commander extends Character {
+    characterType: "COMMANDER";
     initiative?: number;
 }
 
@@ -104,6 +106,9 @@ export interface StrategicObjective extends Serializable {
     attritionCaused?: number;
     panicCaused?: number;
     panicRemoved?: number;
+}
+
+export interface Values {
 }
 
 export interface WrappedException extends RuntimeException {
@@ -134,12 +139,19 @@ export interface RuntimeException extends Exception {
 export interface Exception extends Throwable {
 }
 
+export type CharacterUnion = Commander | Character;
+
 export const enum ActionType {
     ASSAULT = "ASSAULT",
     CHALLENGE = "CHALLENGE",
     REINFORCE = "REINFORCE",
     RALLY = "RALLY",
     MARCH = "MARCH",
+}
+
+export const enum CharacterType {
+    LEADER = "LEADER",
+    COMMANDER = "COMMANDER",
 }
 
 export const enum ConflictStance {

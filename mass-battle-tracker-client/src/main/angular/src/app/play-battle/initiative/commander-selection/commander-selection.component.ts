@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { WebDriverLogger } from 'blocking-proxy/built/lib/webdriver_logger';
-import { Battle } from 'src/app/shared/data-model/mass-battle-tracker-server';
+import { Battle, CharacterType } from 'src/app/shared/data-model/mass-battle-tracker-server';
 
 @Component({
   selector: 'commander-selection',
@@ -28,11 +27,13 @@ export class CommanderSelectionComponent implements OnInit {
                 "leaders": [
                     {
                       "clan": "",
-                      "name": "Bayushi Ogoi"
+                      "name": "Bayushi Ogoi",
+                      "characterType" : CharacterType.LEADER
                     },
                     {
                       "clan": "",
-                      "name": "Shosuro Ageko"
+                      "name": "Shosuro Ageko",
+                      "characterType" : CharacterType.LEADER
                     }
                 ],
                 "currentCasualties": 0,
@@ -47,11 +48,13 @@ export class CommanderSelectionComponent implements OnInit {
                 "leaders": [
                     {
                       "clan": "Lion",
-                      "name": "Matsu Mitsui"
+                      "name": "Matsu Mitsui",
+                      "characterType" : CharacterType.LEADER
                     },
                     {
                       "clan": "Crab",
-                      "name": "Hida Gamagori"
+                      "name": "Hida Gamagori",
+                      "characterType" : CharacterType.LEADER
                     }
                 ],
                 "currentCasualties": 0,
@@ -73,6 +76,11 @@ export class CommanderSelectionComponent implements OnInit {
   }
 
   private updateBattle(): Promise<Battle> {
+    this.battle.involvedArmies.forEach(
+      army => {
+        army.commander.characterType = CharacterType.COMMANDER;
+      }
+    );
     return this.httpClient
     .put<Battle>("/mass-battle-tracker/api/battle", this.battle).toPromise();
   }

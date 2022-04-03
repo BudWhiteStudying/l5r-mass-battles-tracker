@@ -76,7 +76,7 @@ export class LeaderActionComponent implements OnInit {
   switchToNextCommander(roundState : RoundState, battle : Battle): Boolean {
     let roundCanGoOn = true;
     let currentCommander = roundState.actingCommander;
-    let nextCommander = battle.involvedArmies.map(army => army.commander).find(commander => commander!=roundState.actingCommander);
+    let nextCommander = battle.involvedArmies.map(army => army.commander).find(commander => commander.id!=currentCommander.id);
     let availableLeadersForCurrentCommander = this.findAvailableLeaders(roundState, battle, currentCommander).length;
     let availableLeadersForNextCommander = this.findAvailableLeaders(roundState, battle, nextCommander).length;
     if(availableLeadersForNextCommander>0) {
@@ -92,8 +92,13 @@ export class LeaderActionComponent implements OnInit {
   }
 
   private findAvailableLeaders (roundState : RoundState, battle : Battle, commander : Commander) : Character[]{
-    return battle.involvedArmies.find(army => army.commander==commander).cohorts.map(cohort => cohort.leader)
-    .filter(leader => !roundState.actionHistory.filter(action => action.executionRound===roundState.roundIndex).map(action => action.perpetrator).includes(leader));
+    return battle.involvedArmies.find(army => army.commander.id==commander.id)
+      .cohorts.map(cohort => cohort.leader)
+      .filter(
+        leader => !roundState.actionHistory
+          .filter(action => action.executionRound===roundState.roundIndex)
+          .map(action => action.perpetrator.id)
+          .includes(leader.id));
   }
 
   ngOnInit(): void {
